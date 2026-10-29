@@ -1,0 +1,411 @@
+---
+import { Image } from 'astro:assets';
+import { t, localePath, type Lang } from '../i18n/ui';
+import { selected } from '../data/selected';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const cities = [
+  { key: 'city.yakutsk', zone: 'Asia/Yakutsk', utc: '+09', coords: '62.0355° N  129.6755° E' },
+  { key: 'city.spb', zone: 'Europe/Moscow', utc: '+03', coords: '59.9343° N  30.3351° E' },
+] as const;
+
+const ARCHIVE_TOTAL = 32;
+---
+
+<section class="hero grid" aria-labelledby="name">
+  <!-- метки совмещения, как на печатном листе -->
+  <span class="reg reg-tl" aria-hidden="true"></span>
+  <span class="reg reg-br" aria-hidden="true"></span>
+
+  <p class="meta mono">
+    <span class="muted">Portfolio</span><br />
+    2023 — 2026<br />
+    <span class="muted">v 0.1 / draft</span>
+  </p>
+
+  <ul class="clocks mono">
+    {
+      cities.map((c) => (
+        <li>
+          <span>{t(lang, c.key)}</span>
+          <span class="muted">{c.coords}</span>
+          <span>
+            <time data-clock={c.zone}>--:--:--</time> <span class="muted">UTC{c.utc}</span>
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="school mono">{t(lang, 'hero.school')}</p>
+
+  <h1 id="name" class="name">
+    <span class="line line-1" data-scramble="intro">{t(lang, 'name.first')}</span>
+    <span class="role serif">{t(lang, 'hero.role')}</span>
+    <span class="line line-2" data-scramble="intro">{t(lang, 'name.last')}</span>
+  </h1>
+
+  <p class="lead">
+    {t(lang, 'hero.lead.before')}<em class="serif">{t(lang, 'hero.lead.accent')}</em>{t(lang, 'hero.lead.after')}
+  </p>
+
+  <p class="note mono">{t(lang, 'hero.note')}</p>
+</section>
+
+<section class="index" aria-labelledby="index-title">
+  <div class="index-head grid mono">
+    <h2 id="index-title">{t(lang, 'index.title')} <span class="muted">({String(selected.length).padStart(2, '0')})</span></h2>
+    <a class="all" href={localePath(lang, '/archive/')}>
+      <span data-scramble>{t(lang, 'index.all')}</span> <span class="muted">({ARCHIVE_TOTAL})</span> →
+    </a>
+  </div>
+
+  <ol class="rows">
+    {
+      selected.map((p, i) => (
+        <li>
+          <a class="row grid" href={localePath(lang, `/projects/${p.slug}/`)}>
+            <span class="r-num mono muted">{String(i + 1).padStart(3, '0')}</span>
+            <span class="r-title" data-scramble>{p.title[lang]}</span>
+            <span class="r-type mono">{p.type[lang]}</span>
+            <span class="r-year mono">{p.year}</span>
+            <Image class="r-preview" src={p.cover} alt="" width={720} widths={[360, 720]} sizes="360px" loading="lazy" />
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<script>
+  // превью проекта следует за курсором; угол наклона у каждого свой — небольшой беспорядок
+  const rows = document.querySelectorAll<HTMLElement>('.row');
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (fine) {
+    rows.forEach((row) => {
+      const img = row.querySelector<HTMLElement>('.r-preview');
+      if (!img) return;
+      img.style.setProperty('--tilt', `${(Math.random() * 6 - 3).toFixed(2)}deg`);
+      row.addEventListener('mousemove', (e) => {
+        img.style.setProperty('--x', `${e.clientX}px`);
+        img.style.setProperty('--y', `${e.clientY}px`);
+      });
+    });
+  }
+</script>
+
+<style>
+  .muted {
+    color: var(--grey);
+  }
+
+  /* ——— первый экран ——— */
+  .hero {
+    position: relative;
+    min-height: calc(100svh - 70px);
+    grid-template-rows: auto 1fr auto auto;
+    row-gap: 28px;
+    padding-top: clamp(28px, 5vw, 64px);
+    padding-bottom: clamp(32px, 5vw, 72px);
+  }
+
+  .hero p {
+    margin: 0;
+  }
+
+  .meta {
+    grid-column: 1 / span 3;
+  }
+
+  .clocks {
+    grid-column: 5 / span 5;
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .clocks li {
+    display: grid;
+    grid-template-columns: 1.3fr 1.6fr 1fr;
+    gap: 12px;
+  }
+
+  .clocks time {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .school {
+    grid-column: 10 / span 3;
+    text-align: right;
+    color: var(--grey);
+  }
+
+  .name {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    position: relative;
+    margin: 0;
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: clamp(88px, 21.5vw, 420px);
+    line-height: 0.78;
+    letter-spacing: -0.012em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .line {
+    display: block;
+  }
+
+  /* фамилия смещена на три колонки вправо — контролируемый сдвиг */
+  .line-2 {
+    padding-left: calc((100% + var(--gutter)) / 12 * 3);
+  }
+
+  .role {
+    position: absolute;
+    top: 0.34em;
+    right: 0;
+    font-size: clamp(18px, 2.1vw, 40px);
+    line-height: 1;
+    text-transform: none;
+    font-weight: 500;
+    color: var(--graphite);
+  }
+
+  .lead {
+    grid-column: 1 / span 4;
+    grid-row: 4;
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.4;
+    max-width: 30em;
+  }
+
+  .lead em {
+    font-size: 1.22em;
+    line-height: 1;
+  }
+
+  /* заметка «на полях»: чуть сползла с сетки */
+  .note {
+    grid-column: 9 / span 3;
+    grid-row: 4;
+    align-self: end;
+    max-width: 22em;
+    color: var(--graphite);
+    transform: translate(18px, 6px) rotate(-1.4deg);
+    transform-origin: left top;
+  }
+
+  .reg {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+  }
+
+  .reg::before,
+  .reg::after {
+    content: '';
+    position: absolute;
+    background: var(--ink);
+  }
+
+  .reg::before {
+    left: 50%;
+    top: 0;
+    width: 1px;
+    height: 100%;
+  }
+
+  .reg::after {
+    top: 50%;
+    left: 0;
+    height: 1px;
+    width: 100%;
+  }
+
+  .reg-tl {
+    top: 8px;
+    left: calc(var(--margin) - 9px);
+  }
+
+  .reg-br {
+    bottom: 8px;
+    right: calc(var(--margin) - 9px);
+  }
+
+  /* ——— избранное ——— */
+  .index {
+    margin-top: clamp(40px, 8vw, 120px);
+  }
+
+  .index-head {
+    align-items: baseline;
+    padding-bottom: 10px;
+  }
+
+  .index-head h2 {
+    grid-column: 1 / span 6;
+    margin: 0;
+    font: inherit;
+  }
+
+  .all {
+    grid-column: 7 / span 6;
+    justify-self: end;
+  }
+
+  .all:hover [data-scramble] {
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--ink);
+  }
+
+  .rows li {
+    border-bottom: 1px solid var(--hair);
+  }
+
+  .row {
+    align-items: baseline;
+    padding-block: 14px 12px;
+    transition: background-color 0.35s var(--ease);
+  }
+
+  .r-num {
+    grid-column: 1 / span 1;
+  }
+
+  .r-title {
+    grid-column: 2 / span 6;
+    font-size: clamp(20px, 2vw, 30px);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    transition: transform 0.45s var(--ease);
+  }
+
+  .r-type {
+    grid-column: 9 / span 3;
+    color: var(--graphite);
+  }
+
+  .r-year {
+    grid-column: 12 / span 1;
+    justify-self: end;
+  }
+
+  .row:hover {
+    background-color: var(--paper-deep);
+  }
+
+  .row:hover .r-title {
+    transform: translateX(14px);
+  }
+
+  .r-preview {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 20;
+    width: 300px;
+    height: auto;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(calc(var(--x, 0px) + 24px), calc(var(--y, 0px) - 50%)) rotate(var(--tilt, 0deg)) scale(0.96);
+    transition:
+      opacity 0.25s var(--ease),
+      scale 0.25s var(--ease);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 18px 40px -24px rgba(0, 0, 0, 0.35);
+  }
+
+  .row:hover .r-preview {
+    opacity: 1;
+  }
+
+  @media (hover: none), (pointer: coarse) {
+    .r-preview {
+      display: none;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .hero {
+      min-height: auto;
+      grid-template-rows: auto;
+      row-gap: 22px;
+    }
+    .meta {
+      grid-column: 1 / span 3;
+    }
+    .school {
+      grid-column: 4 / span 3;
+    }
+    .clocks {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+    .clocks li {
+      grid-template-columns: 1fr auto;
+      gap: 2px 12px;
+    }
+    .clocks li > :nth-child(2) {
+      grid-row: 2;
+    }
+    .name {
+      grid-row: auto;
+      font-size: 22.5vw;
+      margin-top: 24px;
+    }
+    .line-2 {
+      padding-left: 7vw;
+    }
+    .role {
+      position: static;
+      display: block;
+      margin: 0.5em 0 0.6em;
+      font-size: 24px;
+    }
+    .lead {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+    .note {
+      grid-column: 2 / -1;
+      grid-row: auto;
+      transform: rotate(-1.4deg);
+    }
+    .index-head h2,
+    .all {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+    .r-num {
+      grid-column: 1 / span 1;
+    }
+    .r-title {
+      grid-column: 2 / -1;
+    }
+    .r-type {
+      grid-column: 2 / span 4;
+      margin-top: 6px;
+    }
+    .r-year {
+      grid-column: 6 / span 1;
+    }
+    .row:hover .r-title {
+      transform: none;
+    }
+  }
+</style>

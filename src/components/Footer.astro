@@ -1,0 +1,94 @@
+---
+import { t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+// TODO: настоящие контакты от Катерины
+const contacts = [
+  { label: 'E-mail', value: 'hello@example.com', href: 'mailto:hello@example.com' },
+  { label: 'Telegram', value: '@username', href: 'https://t.me/username' },
+];
+---
+
+<footer class="footer grid mono">
+  <p class="label">{t(lang, 'footer.contact')}</p>
+  <ul class="contacts">
+    {
+      contacts.map((c) => (
+        <li>
+          <span class="muted">{c.label}</span>
+          <a href={c.href}>
+            <span data-scramble>{c.value}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="copy muted">© 2026 Katerina Butusova</p>
+</footer>
+
+<style>
+  .footer {
+    align-items: baseline;
+    margin-top: clamp(80px, 14vw, 200px);
+    padding-block: 18px 22px;
+    border-top: 1px solid var(--hair);
+  }
+
+  .footer p {
+    margin: 0;
+  }
+
+  .label {
+    grid-column: 1 / span 3;
+  }
+
+  .contacts {
+    grid-column: 4 / span 6;
+    display: flex;
+    gap: 40px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contacts li {
+    display: flex;
+    gap: 10px;
+  }
+
+  .contacts a {
+    border-bottom: 1px solid var(--hair);
+    transition: border-color 0.3s var(--ease);
+  }
+
+  .contacts a:hover {
+    border-color: var(--ink);
+  }
+
+  .muted {
+    color: var(--grey);
+  }
+
+  .copy {
+    grid-column: 10 / span 3;
+    justify-self: end;
+  }
+
+  @media (max-width: 800px) {
+    .label,
+    .contacts,
+    .copy {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+    .contacts {
+      flex-direction: column;
+      gap: 6px;
+      margin-block: 10px 18px;
+    }
+  }
+</style>

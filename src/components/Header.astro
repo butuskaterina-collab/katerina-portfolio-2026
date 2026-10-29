@@ -1,0 +1,147 @@
+---
+import { t, localePath, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  path?: string; // путь текущей страницы без языкового префикса — для переключателя
+}
+const { lang, path = '/' } = Astro.props;
+
+const nav = [
+  { key: 'nav.projects', href: '/projects/' },
+  { key: 'nav.archive', href: '/archive/' },
+  { key: 'nav.texts', href: '/texts/' },
+  { key: 'nav.about', href: '/about/' },
+  { key: 'nav.cv', href: '/cv/' },
+] as const;
+
+// деления линейки: метки по колонкам сетки
+const marks = Array.from({ length: 13 }, (_, i) => i * 100);
+---
+
+<header class="header">
+  <div class="ruler" aria-hidden="true">
+    {marks.map((m, i) => <span class="mark" style={`left:${(i / 12) * 100}%`}>{m}</span>)}
+  </div>
+
+  <nav class="bar grid mono" aria-label={lang === 'ru' ? 'Основная навигация' : 'Main navigation'}>
+    <a class="home" href={localePath(lang, '/')}>
+      <span data-scramble>К.Б.</span><span class="muted">/2026</span>
+    </a>
+    <ul class="links">
+      {
+        nav.map((item, i) => (
+          <li>
+            <a href={localePath(lang, item.href)}>
+              <span class="num">{String(i + 1).padStart(2, '0')}</span>
+              <span data-scramble>{t(lang, item.key)}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="lang">
+      <a href={localePath('ru', path)} aria-current={lang === 'ru' ? 'true' : undefined} lang="ru">RU</a>
+      <span class="muted">/</span>
+      <a href={localePath('en', path)} aria-current={lang === 'en' ? 'true' : undefined} lang="en">EN</a>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .header {
+    position: relative;
+    z-index: 10;
+  }
+
+  .ruler {
+    position: relative;
+    height: 14px;
+    margin-inline: var(--margin);
+    border-bottom: 1px solid var(--hair);
+    /* мелкие деления каждые 8px, крупные — каждые 40px */
+    background:
+      repeating-linear-gradient(to right, var(--hair) 0 1px, transparent 1px 40px) bottom / 100% 9px no-repeat,
+      repeating-linear-gradient(to right, var(--hair) 0 1px, transparent 1px 8px) bottom / 100% 4px no-repeat;
+  }
+
+  .mark {
+    position: absolute;
+    top: 0;
+    transform: translateX(3px);
+    font-family: var(--f-mono);
+    font-size: 7px;
+    line-height: 1;
+    color: var(--grey);
+  }
+
+  .bar {
+    align-items: baseline;
+    padding-block: 12px;
+  }
+
+  .home {
+    grid-column: 1 / span 2;
+  }
+
+  .links {
+    grid-column: 4 / span 7;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .links a {
+    display: inline-flex;
+    gap: 6px;
+    transition: opacity 0.3s var(--ease);
+  }
+
+  .num,
+  .muted {
+    color: var(--grey);
+  }
+
+  /* при наведении на меню остальные пункты отступают */
+  .links:hover a:not(:hover) {
+    opacity: 0.35;
+  }
+
+  .lang {
+    grid-column: 12 / span 1;
+    justify-self: end;
+    display: flex;
+    gap: 4px;
+  }
+
+  .lang a:not([aria-current]) {
+    color: var(--grey);
+  }
+
+  .lang a:hover {
+    color: var(--ink);
+  }
+
+  @media (max-width: 800px) {
+    .home {
+      grid-column: 1 / span 3;
+    }
+    .lang {
+      grid-column: 4 / span 3;
+    }
+    .links {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 6px 18px;
+      margin-top: 14px;
+    }
+    .num {
+      display: none;
+    }
+  }
+</style>
