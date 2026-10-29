@@ -1,6 +1,7 @@
 @import '@fontsource-variable/sofia-sans-extra-condensed';
 @import '@fontsource-variable/inter-tight';
 @import '@fontsource-variable/jetbrains-mono';
+@import '@fontsource-variable/cormorant-garamond/wght.css';
 @import '@fontsource-variable/cormorant-garamond/wght-italic.css';
 
 :root {
@@ -11,16 +12,34 @@
   --graphite: #3a3c3f;
   --grey: #8b8f92;
   --hair: rgba(23, 24, 26, 0.14);
-  --hair-soft: rgba(23, 24, 26, 0.06);
+  --hair-soft: rgba(23, 24, 26, 0.055);
 
   --f-display: 'Sofia Sans Extra Condensed Variable', 'Arial Narrow', sans-serif;
   --f-sans: 'Inter Tight Variable', system-ui, sans-serif;
   --f-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
   --f-serif: 'Cormorant Garamond Variable', Georgia, serif;
 
+  /* сетка: 12 колонок, на телефоне 6 */
   --cols: 12;
-  --gutter: clamp(16px, 2vw, 28px);
-  --margin: clamp(16px, 3vw, 44px);
+  --gutter: 24px;
+  --margin: 40px;
+
+  /* шкала отступов — всё кратно 8px */
+  --s1: 8px;
+  --s2: 16px;
+  --s3: 24px;
+  --s4: 40px;
+  --s5: 64px;
+  --s6: 104px;
+  --s7: 168px;
+
+  /* типографическая шкала */
+  --t-mono: 11px;
+  --lh-mono: 16px;
+  --t-body: 17px;
+  --lh-body: 24px;
+  --t-title: 28px;
+  --lh-title: 32px;
 
   --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
 }
@@ -43,15 +62,15 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--f-sans);
-  font-size: 15px;
-  line-height: 1.45;
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
 }
 
 /* фактура бумаги: шум поверх всего, не перехватывает клики */
 body::after {
   content: '';
   position: fixed;
-  inset: -50%;
+  inset: 0;
   z-index: 100;
   pointer-events: none;
   opacity: 0.09;
@@ -65,7 +84,7 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: -2;
   pointer-events: none;
   background:
     radial-gradient(120% 80% at 15% 0%, rgba(255, 255, 255, 0.55), transparent 60%),
@@ -83,6 +102,10 @@ img {
   height: auto;
 }
 
+p {
+  margin: 0;
+}
+
 ::selection {
   background: var(--ink);
   color: var(--paper);
@@ -95,8 +118,8 @@ img {
 
 .mono {
   font-family: var(--f-mono);
-  font-size: 11px;
-  line-height: 1.5;
+  font-size: var(--t-mono);
+  line-height: var(--lh-mono);
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
@@ -108,11 +131,36 @@ img {
   letter-spacing: -0.01em;
 }
 
+.muted {
+  color: var(--grey);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
   column-gap: var(--gutter);
   padding-inline: var(--margin);
+}
+
+/* направляющие колонок — видны едва-едва, клавиша G делает их заметнее */
+.guides {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.guides span {
+  border-inline: 1px solid var(--hair-soft);
+}
+
+html.show-grid .guides {
+  z-index: 99;
+}
+
+html.show-grid .guides span {
+  background: rgba(255, 60, 60, 0.05);
+  border-color: rgba(255, 60, 60, 0.25);
 }
 
 .visually-hidden {
@@ -124,9 +172,24 @@ img {
   white-space: nowrap;
 }
 
+@media (max-width: 1100px) {
+  :root {
+    --gutter: 16px;
+    --margin: 24px;
+  }
+}
+
 @media (max-width: 800px) {
   :root {
     --cols: 6;
+    --gutter: 12px;
+    --margin: 16px;
+    --t-body: 16px;
+    --t-title: 22px;
+    --lh-title: 26px;
+  }
+  .guides span:nth-child(n + 7) {
+    display: none;
   }
 }
 

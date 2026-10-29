@@ -26,6 +26,9 @@ const { lang, path = '/', title = t(lang, 'meta.title'), description = t(lang, '
     <link rel="alternate" hreflang="en" href={new URL(`/en${path}`, Astro.site)} />
   </head>
   <body>
+    <div class="guides grid" aria-hidden="true">
+      {Array.from({ length: 12 }, () => <span />)}
+    </div>
     <Header lang={lang} path={path} />
     <main>
       <slot />
@@ -37,6 +40,13 @@ const { lang, path = '/', title = t(lang, 'meta.title'), description = t(lang, '
       import { initClocks } from '../scripts/clocks';
       initScramble();
       initClocks();
+
+      // G — показать/скрыть сетку (для проверки вёрстки)
+      document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() !== 'g' && e.key.toLowerCase() !== 'п') return;
+        if ((e.target as HTMLElement).closest('input, textarea')) return;
+        document.documentElement.classList.toggle('show-grid');
+      });
     </script>
   </body>
 </html>
