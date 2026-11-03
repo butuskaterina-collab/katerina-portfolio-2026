@@ -6,10 +6,9 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-// TODO: настоящие контакты от Катерины
 const contacts = [
-  { label: 'E-mail', value: 'hello@example.com', href: 'mailto:hello@example.com', col: 4 },
-  { label: 'Telegram', value: '@username', href: 'https://t.me/username', col: 7 },
+  { label: 'E-mail', value: 'butusovakaterinav@yandex.ru', href: 'mailto:butusovakaterinav@yandex.ru', col: 4 },
+  { label: 'Telegram', value: '@kzaraza', href: 'https://t.me/kzaraza', col: 7 },
 ];
 ---
 
@@ -45,6 +44,7 @@ const contacts = [
   }
 
   .contact a {
+    text-transform: none;
     border-bottom: 1px solid var(--hair);
     transition: border-color 0.3s var(--ease);
   }
@@ -65,7 +65,7 @@ const contacts = [
       grid-column: 1 / -1;
     }
     .contact {
-      grid-column: auto / span 3;
+      grid-column: 1 / -1;
     }
     .copy {
       grid-column: 1 / -1;
