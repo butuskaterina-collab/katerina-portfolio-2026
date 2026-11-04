@@ -1,8 +1,7 @@
-@import '@fontsource-variable/sofia-sans-extra-condensed';
 @import '@fontsource-variable/inter-tight';
 @import '@fontsource-variable/jetbrains-mono';
-@import '@fontsource-variable/cormorant-garamond/wght.css';
-@import '@fontsource-variable/cormorant-garamond/wght-italic.css';
+@import '@fontsource/old-standard-tt/400.css';
+@import '@fontsource/old-standard-tt/400-italic.css';
 
 :root {
   /* палитра: холодная бумага, графит, нейтральные серые */
@@ -14,10 +13,9 @@
   --hair: rgba(23, 24, 26, 0.14);
   --hair-soft: rgba(23, 24, 26, 0.055);
 
-  --f-display: 'Sofia Sans Extra Condensed Variable', 'Arial Narrow', sans-serif;
   --f-sans: 'Inter Tight Variable', system-ui, sans-serif;
   --f-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
-  --f-serif: 'Cormorant Garamond Variable', Georgia, serif;
+  --f-serif: 'Old Standard TT', Georgia, serif;
 
   /* сетка: 12 колонок, на телефоне 6 */
   --cols: 12;
@@ -127,8 +125,7 @@ p {
 .serif {
   font-family: var(--f-serif);
   font-style: italic;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-weight: 400;
 }
 
 .muted {

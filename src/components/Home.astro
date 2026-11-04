@@ -29,7 +29,7 @@ const ARCHIVE_TOTAL = 32;
   <p class="meta mono">
     <span class="muted">Portfolio</span><br />
     2023 — 2026<br />
-    <span class="muted">v 0.2 / draft</span>
+    <span class="muted">v 0.3 / draft</span>
   </p>
 
   {
@@ -51,7 +51,7 @@ const ARCHIVE_TOTAL = 32;
       <span class="line line-1">{t(lang, 'name.first')}</span>
       <span class="line line-2">{t(lang, 'name.last')}</span>
     </h1>
-    <p class="role">{t(lang, 'hero.role')}</p>
+    <p class="role mono">{t(lang, 'hero.role')}</p>
   </div>
 
   <p class="lead">
@@ -141,17 +141,20 @@ const ARCHIVE_TOTAL = 32;
     display: contents;
   }
 
+  /* кегль считается от ширины поля набора: «Катерина» заканчивается до 10-й колонки,
+     «Бутусова» от 4-й колонки умещается до правого поля (Old Standard ≈ 4.1em на слово) */
   .line {
     font-family: var(--f-serif);
     font-weight: 400;
-    font-size: clamp(72px, 15.5vw, 300px);
-    line-height: 0.86;
-    letter-spacing: -0.025em;
+    font-size: min(calc((100vw - 2 * var(--margin)) * 0.178), 340px);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
   }
 
   .line-1 {
     grid-column: 1 / -1;
     grid-row: 1;
+    align-self: last baseline;
   }
 
   .line-2 {
@@ -159,19 +162,11 @@ const ARCHIVE_TOTAL = 32;
     grid-row: 2;
   }
 
-  /* «дизайнер»: грубый узкий гротеск — контраст к шёлку антиквы */
+  /* «дизайнер»: моноширинный, как остальные технические подписи; стоит на линии шрифта имени */
   .role {
     grid-column: 10 / -1;
     grid-row: 1;
-    align-self: end;
-    padding-bottom: 0.9vw;
-    font-family: var(--f-display);
-    font-weight: 800;
-    font-size: clamp(26px, 2.85vw, 56px);
-    line-height: 0.88;
-    text-transform: uppercase;
-    letter-spacing: -0.005em;
-    color: var(--ink);
+    align-self: last baseline;
   }
 
   .lead {
@@ -181,7 +176,7 @@ const ARCHIVE_TOTAL = 32;
   }
 
   .lead em {
-    font-size: 1.2em;
+    font-size: 1.04em;
     line-height: 1;
   }
 
@@ -354,7 +349,7 @@ const ARCHIVE_TOTAL = 32;
       margin-top: var(--s4);
     }
     .line {
-      font-size: 19vw;
+      font-size: calc((100vw - 2 * var(--margin)) * 0.205);
     }
     .line-2 {
       grid-column: 2 / -1;
@@ -362,9 +357,8 @@ const ARCHIVE_TOTAL = 32;
     .role {
       grid-column: 2 / -1;
       grid-row: 3;
+      align-self: start;
       margin-top: var(--s2);
-      padding: 0;
-      font-size: 36px;
     }
     .lead {
       grid-column: 1 / -1;
