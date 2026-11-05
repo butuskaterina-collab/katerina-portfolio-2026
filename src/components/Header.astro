@@ -58,11 +58,11 @@ const marks = Array.from({ length: 13 }, (_, i) => i * 100);
     position: relative;
     height: var(--s2);
     margin-inline: var(--margin);
-    border-bottom: 1px solid var(--hair);
+    border-bottom: 1px solid var(--ids__border);
     /* мелкие деления каждые 8px, крупные — каждые 40px */
     background:
-      repeating-linear-gradient(to right, var(--hair) 0 1px, transparent 1px 40px) bottom / 100% 9px no-repeat,
-      repeating-linear-gradient(to right, var(--hair) 0 1px, transparent 1px 8px) bottom / 100% 4px no-repeat;
+      repeating-linear-gradient(to right, var(--ids__border) 0 1px, transparent 1px 40px) bottom / 100% 9px no-repeat,
+      repeating-linear-gradient(to right, var(--ids__border) 0 1px, transparent 1px 8px) bottom / 100% 4px no-repeat;
   }
 
   .mark {
@@ -72,7 +72,7 @@ const marks = Array.from({ length: 13 }, (_, i) => i * 100);
     font-family: var(--f-mono);
     font-size: 7px;
     line-height: 1;
-    color: var(--grey);
+    color: var(--ids__text-caption);
   }
 
   .bar {
@@ -112,11 +112,11 @@ const marks = Array.from({ length: 13 }, (_, i) => i * 100);
   }
 
   .lang a:not([aria-current]) {
-    color: var(--grey);
+    color: var(--ids__text-caption);
   }
 
   .lang a:hover {
-    color: var(--ink);
+    color: var(--ids__text);
   }
 
   @media (max-width: 1100px) {

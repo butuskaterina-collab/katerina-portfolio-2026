@@ -185,7 +185,7 @@ const ARCHIVE_TOTAL = 32;
     grid-column: 10 / span 3;
     grid-row: 4;
     align-self: end;
-    color: var(--graphite);
+    color: var(--ids__text-secondary);
     transform: rotate(-1.5deg);
     transform-origin: left bottom;
   }
@@ -201,7 +201,7 @@ const ARCHIVE_TOTAL = 32;
   .reg::after {
     content: '';
     position: absolute;
-    background: var(--ink);
+    background: var(--ids__text);
   }
 
   .reg::before {
@@ -248,18 +248,18 @@ const ARCHIVE_TOTAL = 32;
   }
 
   .all:hover [data-scramble] {
-    border-bottom: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ids__text);
   }
 
   .rows {
     margin: 0;
     padding: 0;
     list-style: none;
-    border-top: 1px solid var(--ink);
+    border-top: 1px solid var(--ids__text);
   }
 
   .rows li {
-    border-bottom: 1px solid var(--hair);
+    border-bottom: 1px solid var(--ids__border);
   }
 
   .row {
@@ -282,7 +282,7 @@ const ARCHIVE_TOTAL = 32;
 
   .r-type {
     grid-column: 10 / span 2;
-    color: var(--graphite);
+    color: var(--ids__text-secondary);
   }
 
   .r-year {
@@ -291,7 +291,7 @@ const ARCHIVE_TOTAL = 32;
   }
 
   .row:hover {
-    background-color: var(--paper-deep);
+    background-color: var(--ids__surface);
   }
 
   .row:hover .r-title {
@@ -309,7 +309,7 @@ const ARCHIVE_TOTAL = 32;
     opacity: 0;
     transform: translate(calc(var(--x, 0px) + 24px), calc(var(--y, 0px) - 50%)) rotate(var(--tilt, 0deg));
     transition: opacity 0.25s var(--ease);
-    box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 18px 40px -24px color-mix(in srgb, var(--ids__color-black) 35%, transparent);
   }
 
   .row:hover .r-preview {

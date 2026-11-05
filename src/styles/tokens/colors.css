@@ -1,0 +1,20 @@
+/* Семантические цвета портфолио — переопределяют семантику IDS.
+   В вёрстке используем только эти имена; полупрозрачность — через color-mix на месте.
+   Тёмной темы пока нет. */
+
+:root {
+  color-scheme: light;
+
+  --ids__text: var(--ids__color-ink-900);
+  --ids__text-secondary: var(--ids__color-graphite-700);
+  --ids__text-caption: var(--ids__color-grey-500);
+  --ids__link: var(--ids__color-ink-900);
+  --ids__hover: var(--ids__color-ink-900);
+  --ids__accent: var(--ids__color-signal-red);
+  --ids__code: var(--ids__color-grey-500);
+  --ids__surface: var(--ids__color-paper-200);
+  --ids__background: var(--ids__color-paper-100);
+
+  --ids__border: color-mix(in srgb, var(--ids__text) 14%, transparent);
+  --ids__border-soft: color-mix(in srgb, var(--ids__text) 5.5%, transparent);
+}

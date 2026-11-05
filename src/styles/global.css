@@ -3,16 +3,18 @@
 @import '@fontsource/old-standard-tt/400.css';
 @import '@fontsource/old-standard-tt/400-italic.css';
 
-:root {
-  /* палитра: холодная бумага, графит, нейтральные серые */
-  --paper: #eef0ef;
-  --paper-deep: #e4e7e6;
-  --ink: #17181a;
-  --graphite: #3a3c3f;
-  --grey: #8b8f92;
-  --hair: rgba(23, 24, 26, 0.14);
-  --hair-soft: rgba(23, 24, 26, 0.055);
+/* IDS: порядок подключения tokens → (settings) → reset → page-composition → components.
+   settings.css (флюидный корень и шрифт Inter) пока не подключаем: у нас своя
+   пиксельная сетка, решение о переходе — за Катериной. */
+@import './ids/tokens/palette.css';
+@import './ids/tokens/colors.css';
+@import './ids/tokens/scales.css';
+@import './tokens/palette.css';
+@import './tokens/colors.css';
+@import './ids/reset.css';
+@import './ids/page-composition/layout.css';
 
+:root {
   --f-sans: 'Inter Tight Variable', system-ui, sans-serif;
   --f-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
   --f-serif: 'Old Standard TT', Georgia, serif;
@@ -39,7 +41,7 @@
   --t-title: 28px;
   --lh-title: 32px;
 
-  --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --ease: cubic-bezier(0.2, 0.7, 0.1, 1); /* мягче, чем --ids__easing-base */
 }
 
 *,
@@ -57,8 +59,8 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--ids__background);
+  color: var(--ids__text);
   font-family: var(--f-sans);
   font-size: var(--t-body);
   line-height: var(--lh-body);
@@ -85,8 +87,8 @@ body::before {
   z-index: -2;
   pointer-events: none;
   background:
-    radial-gradient(120% 80% at 15% 0%, rgba(255, 255, 255, 0.55), transparent 60%),
-    radial-gradient(90% 70% at 100% 100%, rgba(200, 205, 208, 0.35), transparent 70%);
+    radial-gradient(120% 80% at 15% 0%, color-mix(in srgb, var(--ids__color-white) 55%, transparent), transparent 60%),
+    radial-gradient(90% 70% at 100% 100%, color-mix(in srgb, var(--ids__color-paper-400) 35%, transparent), transparent 70%);
 }
 
 a {
@@ -96,6 +98,7 @@ a {
 
 img {
   display: block;
+  width: auto; /* IDS reset растягивает img на 100% — у нас размер задаёт вёрстка */
   max-width: 100%;
   height: auto;
 }
@@ -105,12 +108,12 @@ p {
 }
 
 ::selection {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--ids__text);
+  color: var(--ids__background);
 }
 
 :focus-visible {
-  outline: 1px solid var(--ink);
+  outline: 1px solid var(--ids__text);
   outline-offset: 3px;
 }
 
@@ -129,7 +132,7 @@ p {
 }
 
 .muted {
-  color: var(--grey);
+  color: var(--ids__text-caption);
 }
 
 .grid {
@@ -148,7 +151,7 @@ p {
 }
 
 .guides span {
-  border-inline: 1px solid var(--hair-soft);
+  border-inline: 1px solid var(--ids__border-soft);
 }
 
 html.show-grid .guides {
@@ -156,8 +159,8 @@ html.show-grid .guides {
 }
 
 html.show-grid .guides span {
-  background: rgba(255, 60, 60, 0.05);
-  border-color: rgba(255, 60, 60, 0.25);
+  background: color-mix(in srgb, var(--ids__accent) 5%, transparent);
+  border-color: color-mix(in srgb, var(--ids__accent) 25%, transparent);
 }
 
 .visually-hidden {
