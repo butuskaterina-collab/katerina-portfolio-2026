@@ -1,5 +1,6 @@
 import { getCollection, getEntry, render } from 'astro:content';
 import type { Lang } from '../i18n/ui';
+import { typograph } from './typograph';
 
 /** Проект на нужном языке: тексты из <lang>.md, остальное (галерея, год, раздел) — из ru.md */
 export async function getProject(slug: string, lang: Lang) {
@@ -10,11 +11,14 @@ export async function getProject(slug: string, lang: Lang) {
   return {
     slug,
     ...base.data,
-    title: local.data.title,
+    // все тексты проходят через типограф: неразрывные пробелы после предлогов, перед тире и т. п.
+    title: typograph(local.data.title),
     type: local.data.type,
-    lead: local.data.lead,
+    lead: typograph(local.data.lead),
     tags: local.data.tags,
-    texts: { ...base.data.texts, ...local.data.texts },
+    texts: Object.fromEntries(
+      Object.entries({ ...base.data.texts, ...local.data.texts }).map(([k, v]) => [k, { label: v.label, body: typograph(v.body) }]),
+    ),
     links: local.data.links.length ? local.data.links : base.data.links,
     translated: local !== base || lang === 'ru',
     Content,

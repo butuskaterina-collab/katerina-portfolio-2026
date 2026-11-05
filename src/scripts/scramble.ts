@@ -19,7 +19,7 @@ function scramble(el: HTMLElement, duration = 520) {
   const frame = (now: number) => {
     const p = Math.min((now - start) / duration, 1);
     el.textContent = [...original]
-      .map((ch, i) => (ch === ' ' || p >= settle[i] ? ch : GLYPHS[(Math.random() * GLYPHS.length) | 0]))
+      .map((ch, i) => (/\s/.test(ch) || p >= settle[i] ? ch : GLYPHS[(Math.random() * GLYPHS.length) | 0]))
       .join('');
     if (p < 1) running.set(el, requestAnimationFrame(frame));
     else el.textContent = original;

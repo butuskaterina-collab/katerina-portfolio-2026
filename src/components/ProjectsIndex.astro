@@ -3,6 +3,7 @@ import Pic from './Pic.astro';
 import { t, localePath, type Lang } from '../i18n/ui';
 import { getProjects } from '../lib/projects';
 import { selected } from '../data/selected';
+import { typograph } from '../lib/typograph';
 
 interface Props {
   lang: Lang;
@@ -18,7 +19,7 @@ const cards = [
   ...ready.map((p) => ({ slug: p.slug, title: p.title, type: p.type, year: p.year, cover: p.cover, href: localePath(lang, `/projects/${p.slug}/`) })),
   ...selected
     .filter((s) => !readySlugs.has(s.slug) && !research.includes(s.type.ru))
-    .map((s) => ({ slug: s.slug, title: s.title[lang], type: s.type[lang], year: s.year, cover: s.cover, href: undefined })),
+    .map((s) => ({ slug: s.slug, title: typograph(s.title[lang]), type: s.type[lang], year: s.year, cover: s.cover, href: undefined })),
 ];
 ---
 

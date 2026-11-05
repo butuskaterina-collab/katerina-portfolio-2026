@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { t, localePath, type Lang } from '../i18n/ui';
 import { selected } from '../data/selected';
+import { typograph } from '../lib/typograph';
 
 interface Props {
   lang: Lang;
@@ -75,7 +76,7 @@ const ARCHIVE_TOTAL = 29; // папок в content/ у Катерины
         <li>
           <a class="row grid" href={localePath(lang, `/projects/${p.slug}/`)}>
             <span class="r-num mono muted">{String(i + 1).padStart(3, '0')}</span>
-            <span class="r-title" data-scramble>{p.title[lang]}</span>
+            <span class="r-title" data-scramble>{typograph(p.title[lang])}</span>
             <span class="r-type mono">{p.type[lang]}</span>
             <span class="r-year mono">{p.year}</span>
             <Image class="r-preview" src={p.cover} alt="" width={720} widths={[360, 720]} sizes="340px" loading="lazy" />

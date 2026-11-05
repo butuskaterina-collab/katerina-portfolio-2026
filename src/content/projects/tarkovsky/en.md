@@ -26,7 +26,7 @@ texts:
   biography:
     label: Biography
     body: |-
-      The biography's main text runs in two columns, with section titles and footnotes in the third; folios and running heads are set vertically. Images move freely — they cross the margins and overlap, like personal notes.
+      The biography's main text runs in two columns, with section titles and footnotes in the third; folios and running heads are set vertically. Images cross the margins and overlap, like personal notes.
   filmography:
     label: Filmography
     body: |-
@@ -45,6 +45,20 @@ texts:
     label: Symbols
     body: |-
       The end of the book gathers the recurring images of his cinema — symbols and elements such as earth and fire. Stills from different films stand side by side, showing how one image passes from film to film.
+  sources:
+    label: Sources
+    body: |-
+      Роберт Бёрд. Андрей Тарковский. Стихии кино. ВЕБКНИГА, 2007.
+
+      Андрей Тарковский. Мартиролог. Tibergraph, 2008.
+
+      Паола Волкова. Ностальгия. Андрей Тарковский. АСТ, 2008.
+
+      Майя Туровская. 7 ½, или Фильмы Андрея Тарковского. Искусство, 1991.
+
+      Госфильмофонд России. Тарковский. Хроника. 2022.
+
+      Digital copies of materials from the collections of the State Central Museum of Cinema and the Mosfilm archive.
   cover:
     label: Cover
     body: |-

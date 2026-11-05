@@ -1,3 +1,5 @@
+import { typograph } from '../lib/typograph';
+
 export type Lang = 'ru' | 'en';
 
 export const ui = {
@@ -74,7 +76,7 @@ export const ui = {
 export type UIKey = keyof (typeof ui)['ru'];
 
 export function t(lang: Lang, key: UIKey): string {
-  return ui[lang][key];
+  return typograph(ui[lang][key]);
 }
 
 /** Путь с учётом языка: русский без префикса, английский — с /en */
