@@ -194,6 +194,7 @@ const sizes = {
     margin: var(--ids__spacer-l) var(--page-margin) 0;
   }
 
+  /* между всеми рядами и картинками — один и тот же шаг, межколонник сетки */
   .p-gallery {
     display: grid;
     row-gap: var(--page-gutter);
@@ -222,13 +223,6 @@ const sizes = {
 
   .g-center figure {
     grid-column: 4 / span 6;
-  }
-
-  /* одиночные картинки не на всю ширину — с паузой сверху и снизу, чтобы ряд дышал */
-  .g-right,
-  .g-left,
-  .g-center {
-    padding-block: var(--ids__spacer-m);
   }
 
   .g-video {
