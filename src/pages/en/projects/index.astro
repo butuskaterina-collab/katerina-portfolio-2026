@@ -1,0 +1,9 @@
+---
+import Base from '../../../layouts/Base.astro';
+import ProjectsIndex from '../../../components/ProjectsIndex.astro';
+import { t } from '../../../i18n/ui';
+---
+
+<Base lang="en" path="/projects/" title={`${t('en', 'projects.title')} — ${t('en', 'meta.title')}`}>
+  <ProjectsIndex lang="en" />
+</Base>

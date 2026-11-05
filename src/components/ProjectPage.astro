@@ -1,0 +1,379 @@
+---
+import Pic from './Pic.astro';
+import { t, localePath, type Lang } from '../i18n/ui';
+import type { Project } from '../lib/projects';
+
+interface Props {
+  lang: Lang;
+  project: Project;
+  next?: Project;
+}
+const { lang, project: p, next } = Astro.props;
+const { Content } = p;
+
+// ширина картинки на экране — для выбора нужного размера файла
+const sizes = {
+  full: '100vw',
+  pair: '(width < 768px) 100vw, 50vw',
+  right: '(width < 768px) 100vw, 75vw',
+  left: '(width < 768px) 100vw, 75vw',
+  center: '(width < 768px) 100vw, 50vw',
+  video: '100vw',
+} as const;
+---
+
+<!--
+  Кейс на 12 колонках, как главная:
+  шапка — служебные подписи на осях 1 / 4 / 7 / 10, название антиквой, лид с главной оси (4-я колонка);
+  дальше обложка и галерея рядами (раскладка ряда задаётся в ru.md), в конце — дополнительный текст.
+-->
+<article class="project">
+  <header class="p-head grid">
+    <a class="p-back mono" href={localePath(lang, '/projects/')}>← <span data-scramble>{t(lang, 'project.back')}</span></a>
+    <p class="p-meta mono" style="--col:4"><span class="muted">{t(lang, 'project.type')}</span><br />{p.type}</p>
+    <p class="p-meta mono" style="--col:7"><span class="muted">{t(lang, 'project.year')}</span><br />{p.year}</p>
+    <p class="p-meta mono" style="--col:10"><span class="muted">{t(lang, 'project.tags')}</span><br />{p.tags.join(' / ')}</p>
+
+    <h1 class="p-title">{p.title}</h1>
+
+    <p class="p-lead">{p.lead}</p>
+
+    {
+      p.links.length > 0 && (
+        <ul class="p-links mono">
+          <li class="muted">{t(lang, 'project.links')}</li>
+          {p.links.map((l) => (
+            <li>
+              <a href={l.href} target="_blank" rel="noopener">
+                <span data-scramble>{l.label}</span> ↗
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </header>
+
+  {
+    p.cover && (
+      <figure class="p-cover">
+        <Pic src={p.cover} sizes="100vw" eager alt={p.title} />
+      </figure>
+    )
+  }
+
+  <div class="p-gallery">
+    {
+      p.gallery.map((row) =>
+        row.layout === 'video' ? (
+          <div class="g-row grid">
+            <div class="g-video" data-youtube={row.youtube}>
+              <button type="button" class="g-play" aria-label={t(lang, 'project.play')}>
+                {row.images[0] && <Pic src={row.images[0]} sizes={sizes.video} />}
+                <span class="g-play-label mono">▶ {t(lang, 'project.play')}</span>
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div class:list={['g-row grid', `g-${row.layout}`]}>
+            {row.images.map((img) => (
+              <figure>
+                <Pic src={img} sizes={sizes[row.layout]} />
+              </figure>
+            ))}
+          </div>
+        ),
+      )
+    }
+  </div>
+
+  <section class="p-text grid">
+    <h2 class="p-text-label mono">{t(lang, 'project.about')}</h2>
+    <div class="p-body"><Content /></div>
+  </section>
+
+  <nav class="p-nav grid mono">
+    <a class="p-nav-back" href={localePath(lang, '/projects/')}>← <span data-scramble>{t(lang, 'project.back')}</span></a>
+    {
+      next && (
+        <a class="p-nav-next" href={localePath(lang, `/projects/${next.slug}/`)}>
+          <span class="muted">{t(lang, 'project.next')}</span>
+          <br />
+          <span data-scramble>{next.title}</span> →
+        </a>
+      )
+    }
+  </nav>
+</article>
+
+<script>
+  // видео: сначала только обложка, плеер YouTube грузится по клику — страница остаётся лёгкой
+  document.querySelectorAll<HTMLElement>('.g-video').forEach((box) => {
+    box.querySelector('button')?.addEventListener('click', () => {
+      const id = box.dataset.youtube;
+      if (!id) return;
+      const frame = document.createElement('iframe');
+      frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+      frame.title = 'YouTube';
+      frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      frame.allowFullscreen = true;
+      box.replaceChildren(frame);
+    });
+  });
+</script>
+
+<style>
+  /* ——— шапка ——— */
+  .p-head {
+    padding-top: var(--ids__spacer-l);
+    align-items: start;
+  }
+
+  .p-back {
+    grid-column: 1 / span 3;
+    grid-row: 1;
+  }
+
+  .p-meta {
+    grid-column: var(--col) / span 3;
+    grid-row: 1;
+  }
+
+  .p-title {
+    grid-column: 1 / span 11;
+    grid-row: 2;
+    margin: var(--ids__spacer-l) 0 0;
+    font-family: var(--f-serif);
+    font-weight: 400;
+    /* кегль — от ширины поля набора, как у имени на главной */
+    font-size: min(calc((100vw - 2 * var(--page-margin)) * 0.085), 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .p-lead {
+    grid-column: 4 / span 6;
+    grid-row: 3;
+    margin-top: var(--ids__spacer-m);
+  }
+
+  .p-links {
+    grid-column: 10 / span 3;
+    grid-row: 3;
+    align-self: end;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .p-links a,
+  .p-nav a {
+    border-bottom: var(--ids__border-width-s) solid var(--ids__border);
+    transition: border-color var(--ids__duration-base) var(--ids__easing-base);
+  }
+
+  .p-links a:hover,
+  .p-nav a:hover {
+    border-color: var(--ids__text);
+    transition-duration: var(--ids__duration-instant);
+  }
+
+  /* ——— картинки ——— */
+  figure {
+    margin: 0;
+  }
+
+  figure :global(img),
+  .g-video :global(img) {
+    width: 100%;
+    height: auto;
+  }
+
+  .p-cover {
+    margin: var(--ids__spacer-l) var(--page-margin) 0;
+  }
+
+  .p-gallery {
+    display: grid;
+    row-gap: var(--page-gutter);
+    margin-top: var(--page-gutter);
+  }
+
+  .g-row {
+    row-gap: var(--page-gutter);
+  }
+
+  .g-full figure {
+    grid-column: 1 / -1;
+  }
+
+  .g-pair figure {
+    grid-column: span 6;
+  }
+
+  .g-right figure {
+    grid-column: 4 / -1;
+  }
+
+  .g-left figure {
+    grid-column: 1 / span 9;
+  }
+
+  .g-center figure {
+    grid-column: 4 / span 6;
+  }
+
+  /* одиночные картинки не на всю ширину — с паузой сверху и снизу, чтобы ряд дышал */
+  .g-right,
+  .g-left,
+  .g-center {
+    padding-block: var(--ids__spacer-m);
+  }
+
+  .g-video {
+    grid-column: 1 / -1;
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--ids__text);
+  }
+
+  .g-video :global(iframe) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .g-play {
+    all: unset;
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .g-play :global(img) {
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.72;
+    transition: opacity var(--ids__duration-base) var(--ids__easing-base);
+  }
+
+  .g-play:hover :global(img) {
+    opacity: 0.55;
+    transition-duration: var(--ids__duration-instant);
+  }
+
+  .g-play-label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: var(--ids__gap-s) var(--ids__gap-m);
+    color: var(--ids__background);
+    background: var(--ids__text); /* плашка читается и на светлой, и на тёмной обложке */
+  }
+
+  .g-play:focus-visible {
+    outline: var(--ids__border-width-s) solid var(--ids__text);
+    outline-offset: 0.2em;
+  }
+
+  /* ——— дополнительный текст ——— */
+  .p-text {
+    margin-top: var(--ids__spacer-xl);
+    align-items: start;
+  }
+
+  .p-text-label {
+    grid-column: 1 / span 3;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  .p-body {
+    grid-column: 4 / span 6;
+  }
+
+  .p-body :global(p + p) {
+    margin-top: calc(var(--ids__density) * 0.4em);
+  }
+
+  /* ——— навигация по кейсам ——— */
+  .p-nav {
+    margin-top: var(--ids__spacer-xl);
+    padding-top: var(--ids__spacer-s);
+    border-top: var(--ids__border-width-s) solid var(--ids__text);
+    align-items: start;
+  }
+
+  .p-nav-back {
+    grid-column: 1 / span 3;
+    justify-self: start;
+  }
+
+  .p-nav-next {
+    grid-column: 10 / span 3;
+    justify-self: start;
+  }
+
+  /* ——— телефон: 6 колонок, ось — 2-я колонка ——— */
+  @media (width < 768px) {
+    .p-head {
+      padding-top: var(--ids__spacer-m);
+      row-gap: var(--ids__gap-l);
+    }
+    .p-back {
+      grid-column: 1 / -1;
+    }
+    .p-meta {
+      grid-row: 2;
+      grid-column: auto / span 2;
+    }
+    .p-meta[style*='--col:4'] {
+      grid-column: 1 / span 2;
+    }
+    .p-title {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      margin-top: var(--ids__spacer-s);
+      font-size: calc((100vw - 2 * var(--page-margin)) * 0.12);
+    }
+    .p-lead {
+      grid-column: 1 / -1;
+      grid-row: 4;
+      margin-top: 0;
+    }
+    .p-links {
+      grid-column: 2 / -1;
+      grid-row: 5;
+    }
+    .g-pair figure,
+    .g-right figure,
+    .g-left figure,
+    .g-center figure {
+      grid-column: 1 / -1;
+    }
+    .g-right figure {
+      grid-column: 2 / -1;
+    }
+    .g-left figure {
+      grid-column: 1 / span 5;
+    }
+    .p-text-label {
+      grid-column: 1 / -1;
+      margin-bottom: var(--ids__gap-s);
+    }
+    .p-body {
+      grid-column: 1 / -1;
+    }
+    .p-nav-back {
+      grid-column: 1 / span 3;
+    }
+    .p-nav-next {
+      grid-column: 4 / span 3;
+    }
+  }
+</style>

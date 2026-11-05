@@ -32,7 +32,7 @@ const marks = Array.from({ length: 13 }, (_, i) => i * 100);
       {
         nav.map((item, i) => (
           <li style={`--col:${i + 4}`}>
-            <a href={localePath(lang, item.href)}>
+            <a href={localePath(lang, item.href)} aria-current={path.startsWith(item.href) ? 'page' : undefined}>
               <span class="num muted">{String(i + 1).padStart(2, '0')}</span>
               <span data-scramble>{t(lang, item.key)}</span>
             </a>
@@ -109,6 +109,11 @@ const marks = Array.from({ length: 13 }, (_, i) => i * 100);
   .bar:has(.links a:hover) .links a:not(:hover) {
     opacity: 0.35;
     transition-duration: var(--ids__duration-instant);
+  }
+
+  /* текущий раздел подчёркнут */
+  .links a[aria-current] [data-scramble] {
+    border-bottom: var(--ids__border-width-s) solid var(--ids__text);
   }
 
   .lang {
