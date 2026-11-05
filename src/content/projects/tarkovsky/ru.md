@@ -13,10 +13,17 @@ lead: >-
 links:
   - { label: Видео, href: 'https://www.youtube.com/watch?v=a3Ir7pQAh_E' }
   - { label: Листать книгу, href: 'https://www.calameo.com/read/007331545efe21ef0242d' }
+texts:
+  about:
+    label: О проекте
+    body: >-
+      Текст книги — компиляция разрозненных биографических изданий, статей, документов
+      и других материалов.
 cover: ./images/01.jpg
 gallery:
   - { layout: full, images: [./images/02.jpg] }
   - { layout: full, images: [./images/03.jpg] }
+  - { layout: text, text: about }
   - { layout: pair, images: [./images/06.jpg, ./images/07.jpg] }
   - { layout: center, images: [./images/04.gif] }
   - { layout: full, images: [./images/05.jpg] }
@@ -35,6 +42,3 @@ gallery:
   - { layout: left, images: [./images/26.jpg] }
   - { layout: full, images: [./images/27.jpg] }
 ---
-
-Текст книги — компиляция разрозненных биографических изданий, статей, документов
-и других материалов.

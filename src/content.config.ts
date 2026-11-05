@@ -16,6 +16,9 @@ const projects = defineCollection({
       lead: z.string(),
       tags: z.array(z.string()).default([]),
       links: z.array(z.object({ label: z.string(), href: z.string().url() })).default([]),
+      // тексты между картинками: ключ → подпись и текст; ключи одинаковые в ru.md и en.md,
+      // абзацы разделяются пустой строкой
+      texts: z.record(z.string(), z.object({ label: z.string().optional(), body: z.string() })).default({}),
       // дальше — только в ru.md
       year: z.number().optional(),
       order: z.number().optional(),
@@ -26,8 +29,11 @@ const projects = defineCollection({
           z.object({
             // full — во всю ширину поля; pair — две картинки по 6 колонок;
             // right — с главной оси (4-я колонка) до правого поля; left — от левого поля на 9 колонок;
-            // center — 6 колонок по главной оси; video — встроенное видео с обложкой
-            layout: z.enum(['full', 'pair', 'right', 'left', 'center', 'video']),
+            // center — 6 колонок по главной оси; video — встроенное видео с обложкой;
+            // text — текст из texts по ключу text: на главной оси (align: axis) или со второй (align: right)
+            layout: z.enum(['full', 'pair', 'right', 'left', 'center', 'video', 'text']),
+            text: z.string().optional(),
+            align: z.enum(['axis', 'right']).default('axis'),
             images: z.array(image()).default([]),
             youtube: z.string().optional(),
           }),

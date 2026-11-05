@@ -10,7 +10,10 @@ lead: >-
 links:
   - { label: Video, href: 'https://www.youtube.com/watch?v=a3Ir7pQAh_E' }
   - { label: Read the book, href: 'https://www.calameo.com/read/007331545efe21ef0242d' }
+texts:
+  about:
+    label: About the project
+    body: >-
+      The text of the book is a compilation of scattered biographies, articles, documents
+      and other materials.
 ---
-
-The text of the book is a compilation of scattered biographies, articles, documents
-and other materials.

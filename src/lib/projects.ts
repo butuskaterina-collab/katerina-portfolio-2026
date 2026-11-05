@@ -14,6 +14,7 @@ export async function getProject(slug: string, lang: Lang) {
     type: local.data.type,
     lead: local.data.lead,
     tags: local.data.tags,
+    texts: { ...base.data.texts, ...local.data.texts },
     links: local.data.links.length ? local.data.links : base.data.links,
     translated: local !== base || lang === 'ru',
     Content,
