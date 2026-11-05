@@ -1,0 +1,21 @@
+/* Шкалы портфолио — дополняют ids/tokens/scales.css, всё считается от флюидного rem.
+   Отступы в вёрстке — только шкалой IDS: --ids__gap-s/m/l, --ids__spacer-s/m/l/xl (+ xxl ниже). */
+
+:root {
+  /* шаг крупнее spacer-xl — для пауз между большими блоками страницы */
+  --ids__spacer-xxl: calc(var(--ids__density) * 6.4rem);
+
+  /* высота шапки: линейка (spacer-s) + строка меню (подпись + поля spacer-s сверху и снизу) */
+  --page-header-height: calc(var(--ids__spacer-s) * 3 + 0.7rem * var(--ids__density));
+
+  /* сетка страницы: 12 колонок, поля — как у .ids__wrapper.XL */
+  --page-cols: 12;
+  --page-gutter: var(--ids__gap-m);
+  --page-margin: calc(var(--ids__density) * 0.75rem);
+
+  @media (width < 768px) {
+    --page-cols: 6;
+    --page-gutter: var(--ids__gap-s);
+    --page-margin: calc(var(--ids__density) * 0.6rem);
+  }
+}

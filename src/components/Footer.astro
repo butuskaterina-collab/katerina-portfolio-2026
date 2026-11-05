@@ -30,9 +30,9 @@ const contacts = [
 
 <style>
   .footer {
-    margin-top: var(--s7);
-    padding-block: var(--s2) var(--s4);
-    border-top: 1px solid var(--ids__border);
+    margin-top: var(--ids__spacer-xxl);
+    padding-block: var(--ids__spacer-s) var(--ids__spacer-m);
+    border-top: var(--ids__border-width-s) solid var(--ids__border);
   }
 
   .label {
@@ -45,21 +45,22 @@ const contacts = [
 
   .contact a {
     text-transform: none;
-    border-bottom: 1px solid var(--ids__border);
-    transition: border-color 0.3s var(--ease);
+    border-bottom: var(--ids__border-width-s) solid var(--ids__border);
+    transition: border-color var(--ids__duration-base) var(--ids__easing-base);
   }
 
   .contact a:hover {
     border-color: var(--ids__text);
+    transition-duration: var(--ids__duration-instant);
   }
 
   .copy {
     grid-column: 10 / span 3;
   }
 
-  @media (max-width: 800px) {
+  @media (width < 768px) {
     .footer {
-      row-gap: var(--s3);
+      row-gap: var(--ids__gap-l);
     }
     .label {
       grid-column: 1 / -1;

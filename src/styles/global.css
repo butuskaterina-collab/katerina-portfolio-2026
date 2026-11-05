@@ -3,52 +3,18 @@
 @import '@fontsource/old-standard-tt/400.css';
 @import '@fontsource/old-standard-tt/400-italic.css';
 
-/* IDS: порядок подключения tokens → (settings) → reset → page-composition → components.
-   settings.css (флюидный корень и шрифт Inter) пока не подключаем: у нас своя
-   пиксельная сетка, решение о переходе — за Катериной. */
+/* IDS: порядок подключения tokens → settings → reset → page-composition → components.
+   Свои слои (tokens/, settings.css) идут сразу после соответствующих слоёв IDS и переопределяют их. */
 @import './ids/tokens/palette.css';
 @import './ids/tokens/colors.css';
 @import './ids/tokens/scales.css';
 @import './tokens/palette.css';
 @import './tokens/colors.css';
+@import './tokens/scales.css';
+@import './settings.css';
 @import './ids/reset.css';
 @import './ids/page-composition/layout.css';
 
-:root {
-  --f-sans: 'Inter Tight Variable', system-ui, sans-serif;
-  --f-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
-  --f-serif: 'Old Standard TT', Georgia, serif;
-
-  /* сетка: 12 колонок, на телефоне 6 */
-  --cols: 12;
-  --gutter: 24px;
-  --margin: 40px;
-
-  /* шкала отступов — всё кратно 8px */
-  --s1: 8px;
-  --s2: 16px;
-  --s3: 24px;
-  --s4: 40px;
-  --s5: 64px;
-  --s6: 104px;
-  --s7: 168px;
-
-  /* типографическая шкала */
-  --t-mono: 11px;
-  --lh-mono: 16px;
-  --t-body: 17px;
-  --lh-body: 24px;
-  --t-title: 28px;
-  --lh-title: 32px;
-
-  --ease: cubic-bezier(0.2, 0.7, 0.1, 1); /* мягче, чем --ids__easing-base */
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
 
 html {
   -webkit-text-size-adjust: 100%;
@@ -57,13 +23,7 @@ html {
 }
 
 body {
-  margin: 0;
   min-height: 100vh;
-  background: var(--ids__background);
-  color: var(--ids__text);
-  font-family: var(--f-sans);
-  font-size: var(--t-body);
-  line-height: var(--lh-body);
 }
 
 /* фактура бумаги: шум поверх всего, не перехватывает клики */
@@ -76,7 +36,7 @@ body::after {
   opacity: 0.09;
   mix-blend-mode: multiply;
   background-image: url('/textures/grain.svg');
-  background-size: 240px;
+  background-size: calc(var(--ids__spacer-xxl) * 1.5); /* зерно растёт вместе со страницей */
 }
 
 /* лёгкая неровность освещения листа */
@@ -113,14 +73,14 @@ p {
 }
 
 :focus-visible {
-  outline: 1px solid var(--ids__text);
-  outline-offset: 3px;
+  outline: var(--ids__border-width-s) solid var(--ids__text);
+  outline-offset: 0.2em;
 }
 
 .mono {
   font-family: var(--f-mono);
-  font-size: var(--t-mono);
-  line-height: var(--lh-mono);
+  font-size: 0.7rem; /* самый мелкий кегль IDS (подписи) */
+  line-height: var(--ids__density);
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
@@ -137,9 +97,9 @@ p {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
-  column-gap: var(--gutter);
-  padding-inline: var(--margin);
+  grid-template-columns: repeat(var(--page-cols), minmax(0, 1fr));
+  column-gap: var(--page-gutter);
+  padding-inline: var(--page-margin);
 }
 
 /* направляющие колонок — видны едва-едва, клавиша G делает их заметнее */
@@ -151,7 +111,7 @@ p {
 }
 
 .guides span {
-  border-inline: 1px solid var(--ids__border-soft);
+  border-inline: var(--ids__border-width-s) solid var(--ids__border-soft);
 }
 
 html.show-grid .guides {
@@ -172,22 +132,7 @@ html.show-grid .guides span {
   white-space: nowrap;
 }
 
-@media (max-width: 1100px) {
-  :root {
-    --gutter: 16px;
-    --margin: 24px;
-  }
-}
-
-@media (max-width: 800px) {
-  :root {
-    --cols: 6;
-    --gutter: 12px;
-    --margin: 16px;
-    --t-body: 16px;
-    --t-title: 22px;
-    --lh-title: 26px;
-  }
+@media (width < 768px) {
   .guides span:nth-child(n + 7) {
     display: none;
   }

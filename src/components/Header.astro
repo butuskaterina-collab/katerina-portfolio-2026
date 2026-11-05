@@ -52,31 +52,37 @@ const marks = Array.from({ length: 13 }, (_, i) => i * 100);
   .header {
     position: relative;
     z-index: 10;
+    padding: 0; /* поля задаёт сетка страницы, а не общий отступ header из ids/layout.css */
   }
 
   .ruler {
     position: relative;
-    height: var(--s2);
-    margin-inline: var(--margin);
-    border-bottom: 1px solid var(--ids__border);
-    /* мелкие деления каждые 8px, крупные — каждые 40px */
+    height: var(--ids__spacer-s);
+    margin-inline: var(--page-margin);
+    border-bottom: var(--ids__border-width-s) solid var(--ids__border);
+    /* мелкие деления — шагом gap-s, крупные — шагом spacer-m; растут вместе со страницей */
     background:
-      repeating-linear-gradient(to right, var(--ids__border) 0 1px, transparent 1px 40px) bottom / 100% 9px no-repeat,
-      repeating-linear-gradient(to right, var(--ids__border) 0 1px, transparent 1px 8px) bottom / 100% 4px no-repeat;
+      repeating-linear-gradient(to right, var(--ids__border) 0 var(--ids__border-width-s), transparent var(--ids__border-width-s) var(--ids__spacer-m)) bottom / 100% var(--ids__gap-s) no-repeat,
+      repeating-linear-gradient(to right, var(--ids__border) 0 var(--ids__border-width-s), transparent var(--ids__border-width-s) var(--ids__gap-s)) bottom / 100% calc(var(--ids__gap-s) / 2) no-repeat;
   }
 
   .mark {
     position: absolute;
-    top: 1px;
-    transform: translateX(3px);
+    top: 0;
+    transform: translateX(0.4em);
     font-family: var(--f-mono);
-    font-size: 7px;
+    font-size: 0.4rem;
     line-height: 1;
     color: var(--ids__text-caption);
   }
 
+  /* последняя метка стоит у правого поля — подписываем её слева от деления */
+  .mark:last-child {
+    transform: translateX(calc(-100% - 0.4em));
+  }
+
   .bar {
-    padding-block: var(--s2);
+    padding-block: var(--ids__spacer-s);
   }
 
   .home {
@@ -96,19 +102,20 @@ const marks = Array.from({ length: 13 }, (_, i) => i * 100);
 
   .links a {
     display: inline-flex;
-    gap: 6px;
-    transition: opacity 0.3s var(--ease);
+    gap: 0.5em;
+    transition: opacity var(--ids__duration-base) var(--ids__easing-base);
   }
 
   .bar:has(.links a:hover) .links a:not(:hover) {
     opacity: 0.35;
+    transition-duration: var(--ids__duration-instant);
   }
 
   .lang {
     grid-column: 12 / span 1;
     justify-self: end;
     display: flex;
-    gap: 4px;
+    gap: 0.35em;
   }
 
   .lang a:not([aria-current]) {
@@ -119,15 +126,16 @@ const marks = Array.from({ length: 13 }, (_, i) => i * 100);
     color: var(--ids__text);
   }
 
-  @media (max-width: 1100px) {
+  @media (width < 768px) {
     .num {
       display: none;
     }
-  }
-
-  @media (max-width: 800px) {
+    /* на узком экране метки линейки через одну, иначе слипаются */
+    .mark:nth-child(even) {
+      display: none;
+    }
     .bar {
-      row-gap: var(--s2);
+      row-gap: var(--ids__spacer-s);
     }
     .home {
       grid-column: 1 / span 3;
