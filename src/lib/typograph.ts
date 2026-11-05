@@ -29,6 +29,9 @@ export function typograph(input: string): string {
   s = s.replace(/ × /g, `${NBSP}×${NBSP}`);
   s = s.replace(/(\d) (?=[\p{L}%½¼¾])/gu, `$1${NBSP}`);
 
+  // диапазон чисел не разрывается по тире: «1932–1986»
+  s = s.replace(/(\d)\s?[–-]\s?(?=\d)/g, `$1\u2060–\u2060`);
+
   // инициалы и сокращения: «М. И. Туровская», «т. е.»
   s = s.replace(/(^|\s)(\p{Lu}\.) (?=\p{Lu})/gu, `$1$2${NBSP}`);
 

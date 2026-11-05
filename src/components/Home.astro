@@ -76,32 +76,18 @@ const ARCHIVE_TOTAL = 29; // папок в content/ у Катерины
         <li>
           <a class="row grid" href={localePath(lang, `/projects/${p.slug}/`)}>
             <span class="r-num mono muted">{String(i + 1).padStart(3, '0')}</span>
-            <span class="r-title" data-scramble>{typograph(p.title[lang])}</span>
+            <span class="r-thumb" aria-hidden="true">
+              <Image src={p.cover} alt="" width={720} widths={[360, 720]} sizes="(width < 768px) 0px, 25vw" loading="lazy" />
+            </span>
+            <span class="r-title">{typograph(p.title[lang])}</span>
             <span class="r-type mono">{p.type[lang]}</span>
             <span class="r-year mono">{p.year}</span>
-            <Image class="r-preview" src={p.cover} alt="" width={720} widths={[360, 720]} sizes="340px" loading="lazy" />
           </a>
         </li>
       ))
     }
   </ol>
 </section>
-
-<script>
-  // превью проекта следует за курсором; угол наклона у каждого свой — небольшой беспорядок
-  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  if (fine) {
-    document.querySelectorAll<HTMLElement>('.row').forEach((row) => {
-      const img = row.querySelector<HTMLElement>('.r-preview');
-      if (!img) return;
-      img.style.setProperty('--tilt', `${(Math.random() * 6 - 3).toFixed(2)}deg`);
-      row.addEventListener('mousemove', (e) => {
-        img.style.setProperty('--x', `${e.clientX}px`);
-        img.style.setProperty('--y', `${e.clientY}px`);
-      });
-    });
-  }
-</script>
 
 <style>
   /* ——— первый экран ——— */
@@ -263,18 +249,26 @@ const ARCHIVE_TOTAL = 29; // папок в content/ у Катерины
     border-bottom: var(--ids__border-width-s) solid var(--ids__border);
   }
 
+  /* строка: при наведении номер гаснет, название уходит влево на три колонки (к левому полю),
+     а в освободившемся месте — колонки 7–9 — проявляется кадр проекта во всю высоту строки */
   .row {
+    position: relative;
     align-items: baseline;
     padding-block: var(--ids__spacer-s);
-    transition: background-color var(--ids__duration-base) var(--ids__easing-base);
+    container-type: inline-size;
+    /* ширина трёх колонок с межколонниками — на столько сдвигается название (100cqw — поле набора без полей страницы) */
+    --shift: calc((100cqw - (var(--page-cols) - 1) * var(--page-gutter)) / var(--page-cols) * 3 + var(--page-gutter) * 3);
   }
 
   .r-num {
     grid-column: 1 / span 3;
+    transition: opacity var(--ids__duration-base) var(--ids__easing-base);
   }
 
   .r-title {
     grid-column: 4 / span 6;
+    grid-row: 1;
+    position: relative;
     font-size: 1.5rem; /* кегль h3 в IDS */
     line-height: calc(var(--ids__density) / 1.1);
     letter-spacing: -0.015em;
@@ -291,38 +285,39 @@ const ARCHIVE_TOTAL = 29; // папок в content/ у Катерины
     justify-self: end;
   }
 
-  .row:hover {
-    background-color: var(--ids__surface);
-    transition-duration: var(--ids__duration-instant);
-  }
-
-  .row:hover .r-title {
-    transform: translateX(var(--ids__spacer-s));
-    transition-duration: var(--ids__duration-instant);
-  }
-
-  .r-preview {
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 20;
-    width: 15rem;
-    height: auto;
-    pointer-events: none;
+  .r-thumb {
+    grid-column: 7 / span 3;
+    grid-row: 1;
+    align-self: stretch;
+    /* выходит на поля строки сверху и снизу — кадр во всю высоту ячейки */
+    margin-block: calc(-1 * var(--ids__spacer-s));
+    position: relative;
+    overflow: hidden;
     opacity: 0;
-    transform: translate(calc(var(--x, 0px) + var(--ids__gap-l)), calc(var(--y, 0px) - 50%)) rotate(var(--tilt, 0deg));
     transition: opacity var(--ids__duration-base) var(--ids__easing-base);
-    box-shadow: 0 var(--ids__spacer-s) var(--ids__spacer-m) calc(-1 * var(--ids__gap-l)) color-mix(in srgb, var(--ids__color-black) 35%, transparent);
   }
 
-  .row:hover .r-preview {
-    opacity: 1;
-    transition-duration: var(--ids__duration-instant);
+  /* картинка не влияет на высоту строки: занимает ячейку целиком и обрезается */
+  .r-thumb :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
-  @media (hover: none), (pointer: coarse) {
-    .r-preview {
-      display: none;
+  @media (hover: hover) and (pointer: fine) {
+    .row:hover .r-num {
+      opacity: 0;
+      transition-duration: var(--ids__duration-instant);
+    }
+    .row:hover .r-title {
+      transform: translateX(calc(-1 * var(--shift)));
+      transition-duration: var(--ids__duration-instant);
+    }
+    .row:hover .r-thumb {
+      opacity: 1;
+      transition-duration: var(--ids__duration-instant);
     }
   }
 
@@ -398,8 +393,8 @@ const ARCHIVE_TOTAL = 29; // папок в content/ у Катерины
     .r-year {
       grid-column: 6 / span 1;
     }
-    .row:hover .r-title {
-      transform: none;
+    .r-thumb {
+      display: none;
     }
   }
 </style>

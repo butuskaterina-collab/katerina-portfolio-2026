@@ -68,7 +68,7 @@ const sizes = {
           const txt = row.text ? p.texts[row.text] : undefined;
           if (!txt) return null;
           return (
-            <section class:list={['g-row g-text grid', `g-text-${row.align}`]}>
+            <section class="g-row g-text grid">
               {txt.label && <h2 class="g-text-label mono">{txt.label}</h2>}
               <div class="g-text-body">
                 {txt.body.split(/\n\s*\n/).map((para) => (
@@ -297,11 +297,8 @@ const sizes = {
     font-weight: 400;
   }
 
+  /* все тексты — справа, с 7-й колонки до правого поля */
   .g-text-body {
-    grid-column: 4 / span 6;
-  }
-
-  .g-text-right .g-text-body {
     grid-column: 7 / span 6;
   }
 
@@ -377,11 +374,7 @@ const sizes = {
       grid-column: 1 / -1;
       margin-bottom: var(--ids__gap-s);
     }
-    .g-text-body,
-    .g-text-right .g-text-body {
-      grid-column: 1 / -1;
-    }
-    .g-text-right .g-text-body {
+    .g-text-body {
       grid-column: 2 / -1;
     }
     .p-nav-back {
