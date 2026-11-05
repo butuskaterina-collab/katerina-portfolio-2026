@@ -14,29 +14,39 @@ texts:
   about:
     label: About the project
     body: |-
-      The project is entirely my own, from the text to the binding. The text is a compilation of scattered biographies, articles, documents and other materials: I gathered and edited it, arranged it chronologically, designed the structure, laid out the pages and assembled the book.
+      A second-year project at the HSE School of Design, tutor — Stepanov, 2023/2024. It is entirely my own, from the text to the binding: I compiled the text from scattered biographies, articles, documents and diaries, arranged it chronologically, designed the structure, laid out the pages and assembled the book.
 
-      The spine is left open, so the sewn book block shows.
-  structure:
-    label: Structure
+      Existing books on Tarkovsky tell his life and his films separately, push images into appendices, and dress their covers in acid colours far from his cinema. I wanted a calm, unified retrospective — a book to give as a gift or keep in a collection.
+  concept:
+    label: Concept
     body: |-
-      The book follows Tarkovsky's life: a biography from childhood to his last years, then the filmography, film by film, and a separate part on the motifs that run through all of his cinema.
+      Tarkovsky shot on Kodak, so film stock became the key metaphor. The 256 × 192 mm format follows the proportions of a frame, the 216 × 144 mm type area relates to a 24 × 36 frame, and the yellow is the manufacturer's signature colour.
+
+      The biography and the filmography run in parallel and echo each other. The way into the book and the way out are black and white: colour appears with Tarkovsky's birth and fades after his death.
+  biography:
+    label: Biography
+    body: |-
+      The biography's main text runs in two columns, with section titles and footnotes in the third; folios and running heads are set vertically. Images move freely — they cross the margins and overlap, like personal notes.
   filmography:
     label: Filmography
     body: |-
-      The filmography is set on black, as in a dark cinema: stills and quotes read brighter against it, and the only colour is a yellow accent for navigation and highlights.
+      In the second part all text is set vertically: quotes and the main text in the upper field, stills and timecodes in the lower one. The stills follow one another like film on a reel.
 
-      Each film opens with its title and year in square brackets, followed by genre, country, running time, a strip of stills and the words of the director himself and of critics.
+      Each film opens with its title and year in square brackets, next to its genre, country and running time.
   documents:
-    label: Documents
+    label: Images
     body: |-
-      Archival materials — newspaper articles, handwritten pages — are placed in the book as they are, with the marks of time. Around them, in the margins, quotes and comments explain what was happening around the film.
+      The book uses three kinds of images. Photographs from his life and pages of documents and diaries are processed: the blending was changed and opacity lowered, and documents were retouched so they look clean and don't fight the text. Film stills are left untouched.
   typography:
-    label: Typography
+    label: Typefaces
     body: |-
-      The cover and headings are set in a wide lowercase grotesque, with dates in square brackets. The brackets [1932–1986] from the cover recur throughout the book and mark time: years of life, years of films, periods.
+      Section titles are set in Soyuz Grotesk, a digital revival of the sans serif fashionable in the USSR from the mid-1960s to the late 1980s. The biography is set in Kazimir Text, a rethinking of early twentieth-century book typography. The filmography, running heads and folios use TT Commons Pro.
   motifs:
-    label: Motifs
+    label: Symbols
     body: |-
-      The last part gathers recurring images — symbols and elements such as earth and fire. Stills from different films stand side by side, showing how one image passes from film to film.
+      The end of the book gathers the recurring images of his cinema — symbols and elements such as earth and fire. Stills from different films stand side by side, showing how one image passes from film to film.
+  cover:
+    label: Cover
+    body: |-
+      The dust jacket is attached to the back of the book block, leaving the spine open. Its inside carries material from Tarkovsky's diary, his photographs and drawings.
 ---
