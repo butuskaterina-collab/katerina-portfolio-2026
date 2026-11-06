@@ -45,15 +45,18 @@ const switchRoles = ['all', ...ROLES] as const;
       }
     </ul>
 
-    {
-      switchRoles.map((role) =>
-        role === 'all' ? null : (
-          <p class="cv-focus" data-focus={role}>
-            {tp(cv.focus[role][lang])}
-          </p>
-        ),
-      )
-    }
+    <!-- все строки фокуса лежат в одной ячейке: высота шапки не меняется при переключении -->
+    <div class="cv-focus-wrap">
+      {
+        switchRoles.map((role) =>
+          role === 'all' ? null : (
+            <p class="cv-focus" data-focus={role}>
+              {tp(cv.focus[role][lang])}
+            </p>
+          ),
+        )
+      }
+    </div>
   </header>
 
   <nav class="cv-switch grid mono" aria-label={t(lang, 'cv.view')}>
@@ -239,10 +242,16 @@ const switchRoles = ['all', ...ROLES] as const;
   }
 
   /* строка фокуса видна только у выбранного направления */
-  .cv-focus {
+  .cv-focus-wrap {
     grid-column: 1 / span 9;
     grid-row: 3;
-    display: none;
+    display: grid;
+  }
+
+  .cv-focus {
+    grid-area: 1 / 1;
+    margin: 0;
+    visibility: hidden;
     font-size: 1.5rem;
     line-height: calc(var(--ids__density) / 1.1);
     letter-spacing: -0.015em;
@@ -253,7 +262,7 @@ const switchRoles = ['all', ...ROLES] as const;
   .cv[data-role='motion'] [data-focus='motion'],
   .cv[data-role='art'] [data-focus='art'],
   .cv[data-role='digital'] [data-focus='digital'] {
-    display: block;
+    visibility: visible;
   }
 
   /* ——— переключатель ——— */
@@ -394,7 +403,7 @@ const switchRoles = ['all', ...ROLES] as const;
       grid-column: 1 / -1;
       grid-row: auto;
     }
-    .cv-focus {
+    .cv-focus-wrap {
       grid-column: 1 / -1;
       grid-row: auto;
     }
