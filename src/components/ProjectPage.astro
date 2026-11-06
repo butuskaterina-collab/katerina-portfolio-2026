@@ -18,6 +18,7 @@ const sizes = {
   left: '(width < 768px) 100vw, 75vw',
   center: '(width < 768px) 100vw, 50vw',
   video: '100vw',
+  loop: '100vw',
 } as const;
 ---
 
@@ -78,6 +79,17 @@ const sizes = {
             </section>
           );
         }
+        if (row.layout === 'loop') {
+          return (
+            <div class="g-row grid">
+              <figure class="g-loop">
+                {row.images.map((img, i) => (
+                  <Pic src={img} sizes={sizes.loop} class={i === 0 ? 'is-on' : ''} />
+                ))}
+              </figure>
+            </div>
+          );
+        }
         return row.layout === 'video' ? (
           <div class="g-row grid">
             <div class="g-video" data-youtube={row.youtube}>
@@ -115,6 +127,20 @@ const sizes = {
 </article>
 
 <script>
+  // кадры loop сменяют друг друга, как в гифке; при «уменьшить движение» стоит первый кадр
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<HTMLElement>('.g-loop').forEach((box) => {
+      const frames = [...box.querySelectorAll('img')];
+      if (frames.length < 2) return;
+      let i = 0;
+      setInterval(() => {
+        frames[i].classList.remove('is-on');
+        i = (i + 1) % frames.length;
+        frames[i].classList.add('is-on');
+      }, 1100);
+    });
+  }
+
   // видео: сначала только обложка, плеер YouTube грузится по клику — страница остаётся лёгкой
   document.querySelectorAll<HTMLElement>('.g-video').forEach((box) => {
     box.querySelector('button')?.addEventListener('click', () => {
@@ -231,6 +257,21 @@ const sizes = {
 
   .g-center figure {
     grid-column: 4 / span 6;
+  }
+
+  /* кадры лежат стопкой в одной ячейке, виден один */
+  .g-loop {
+    grid-column: 1 / -1;
+    display: grid;
+  }
+
+  .g-loop :global(img) {
+    grid-area: 1 / 1;
+    visibility: hidden;
+  }
+
+  .g-loop :global(img.is-on) {
+    visibility: visible;
   }
 
   .g-video {

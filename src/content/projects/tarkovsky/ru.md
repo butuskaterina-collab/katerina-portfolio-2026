@@ -71,29 +71,31 @@ gallery:
   - { layout: full, images: [./images/02.jpg] }
   - { layout: full, images: [./images/03.jpg] }
   - { layout: text, text: about }
-  - { layout: center, images: [./images/04.gif] }
+  - { layout: loop, images: [./images/06-1.jpg, ./images/06-2.jpg, ./images/06-3.jpg] }
   - { layout: text, text: cover }
-  - { layout: pair, images: [./images/06.jpg, ./images/07.jpg] }
+  - { layout: left, images: [./images/07.jpg] }
+  - { layout: pair, images: [./images/08.jpg, ./images/09.jpg] }
   - { layout: text, text: concept }
-  - { layout: full, images: [./images/05.jpg] }
+  - { layout: full, images: [./images/04.jpg] }
   - { layout: text, text: biography }
-  - { layout: pair, images: [./images/09.jpg, ./images/14.jpg] }
+  - { layout: pair, images: [./images/05.jpg, ./images/12.jpg] }
+  - { layout: pair, images: [./images/11.jpg, ./images/14.jpg] }
+  - { layout: pair, images: [./images/18.jpg, ./images/21.jpg] }
+  - { layout: full, images: [./images/10.jpg] }
   - { layout: text, text: filmography }
-  - { layout: right, images: [./images/10.jpg] }
-  - { layout: pair, images: [./images/08.jpg, ./images/12.jpg] }
-  - { layout: pair, images: [./images/11.jpg, ./images/16.jpg] }
-  - { layout: left, images: [./images/13.jpg] }
+  - { layout: pair, images: [./images/16.jpg, ./images/25.jpg] }
+  - { layout: full, images: [./images/13.jpg] }
+  - { layout: left, images: [./images/15.jpg] }
   - { layout: text, text: documents }
-  - { layout: full, images: [./images/15.jpg] }
-  - { layout: text, text: typography }
-  - { layout: video, youtube: a3Ir7pQAh_E, images: [./images/19.jpg] }
-  - { layout: pair, images: [./images/17.jpg, ./images/18.jpg] }
+  - { layout: pair, images: [./images/19.jpg, ./images/22.jpg] }
   - { layout: right, images: [./images/20.jpg] }
-  - { layout: pair, images: [./images/22.jpg, ./images/25.jpg] }
-  - { layout: full, images: [./images/21.jpg] }
-  - { layout: pair, images: [./images/23.jpg, ./images/24.jpg] }
+  - { layout: full, images: [./images/17.jpg] }
+  - { layout: text, text: typography }
+  - { layout: video, youtube: a3Ir7pQAh_E, images: [./images/23.jpg] }
+  - { layout: pair, images: [./images/26.jpg, ./images/27.jpg] }
   - { layout: text, text: motifs }
-  - { layout: left, images: [./images/26.jpg] }
-  - { layout: full, images: [./images/27.jpg] }
+  - { layout: full, images: [./images/28.jpg] }
+  - { layout: full, images: [./images/29.jpg] }
+  - { layout: right, images: [./images/30.jpg] }
   - { layout: text, text: sources }
 ---
