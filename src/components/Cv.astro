@@ -1,0 +1,470 @@
+---
+import { t, type Lang } from '../i18n/ui';
+import { typograph } from '../lib/typograph';
+import { cv, ROLES, roleNames, type Role } from '../data/cv';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const tp = (s: string) => typograph(s);
+const r = (roles: Role[]) => roles.join(' ');
+const years = (y: string | { ru: string; en: string }) => (typeof y === 'string' ? y : y[lang]);
+const switchRoles = ['all', ...ROLES] as const;
+---
+
+<!--
+  CV на 12 колонках. Одно резюме под разные вакансии: переключатель «Смотреть как»
+  подсвечивает навыки, инструменты и пункты опыта выбранного направления, остальное гаснет.
+  Версия живёт в адресе (?role=motion) — ссылку можно отправить в отклике,
+  а «Скачать PDF» печатает только подходящие пункты.
+-->
+<article class="cv" data-role="all">
+  <header class="cv-head grid">
+    <h1 class="cv-name">{cv.name[lang]}</h1>
+
+    <figure class="cv-photo">
+      <!-- TODO: фото Катерина пришлёт -->
+      <span class="mono muted">{t(lang, 'cv.photo')}</span>
+    </figure>
+
+    <p class="cv-meta mono" style="--col:1">
+      {cv.title[lang]}<br /><span class="muted">{cv.subtitle[lang]}</span>
+    </p>
+    <p class="cv-meta mono" style="--col:4">
+      {cv.location[lang]}<br /><span class="muted">{tp(cv.worldwide[lang])}</span>
+    </p>
+    <ul class="cv-meta cv-contacts mono" style="--col:7">
+      {
+        cv.contacts.map((c) => (
+          <li>
+            <span class="muted">{c.label[lang]}</span> <a href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener">{c.value}</a>
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      switchRoles.map((role) =>
+        role === 'all' ? null : (
+          <p class="cv-focus" data-focus={role}>
+            {tp(cv.focus[role][lang])}
+          </p>
+        ),
+      )
+    }
+  </header>
+
+  <nav class="cv-switch grid mono" aria-label={t(lang, 'cv.view')}>
+    <p class="cv-switch-label muted">{t(lang, 'cv.view')}</p>
+    <div class="cv-switch-roles">
+      {
+        switchRoles.map((role) => (
+          <button type="button" data-set-role={role} aria-pressed={role === 'all' ? 'true' : 'false'}>
+            {roleNames[role][lang]}
+          </button>
+        ))
+      }
+    </div>
+    <div class="cv-switch-actions">
+      <button type="button" data-copy data-copied={t(lang, 'cv.copied')}>{t(lang, 'cv.link')}</button>
+      <button type="button" data-print>{t(lang, 'cv.pdf')} ↓</button>
+    </div>
+  </nav>
+
+  <section class="cv-block grid">
+    <h2 class="cv-label mono">{t(lang, 'cv.about')}</h2>
+    <p class="cv-body">{tp(cv.about[lang])}</p>
+  </section>
+
+  <section class="cv-block grid">
+    <h2 class="cv-label mono">{t(lang, 'cv.skills')}</h2>
+    {
+      cv.skills.map((g) => (
+        <div class="cv-row">
+          <p class="cv-sub mono muted">{g.group}</p>
+          <ul class="cv-tags">
+            {g.items.map((s) => (
+              <li data-roles={r(s.roles)}>{s.text[lang]}</li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+    <div class="cv-row">
+      <p class="cv-sub mono muted">{t(lang, 'cv.tools')}</p>
+      <ul class="cv-tags">
+        {cv.tools.map((tool) => <li data-roles={r(tool.roles)}>{tool.name}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="cv-block grid">
+    <h2 class="cv-label mono">{t(lang, 'cv.experience')}</h2>
+    {
+      cv.experience.map((job) => {
+        const jobRoles = [...new Set(job.points.flatMap((p) => p.roles))];
+        return (
+          <div class="cv-row cv-job" data-roles={r(jobRoles)}>
+            <p class="cv-sub mono">
+              {lang === 'en' && job.companyEn ? job.companyEn : job.company}
+              <br />
+              <span class="muted">{job.role[lang]}</span>
+              <br />
+              <span class="muted">{years(job.years)}</span>
+            </p>
+            <ul class="cv-points">
+              {job.points.map((p) => (
+                <li data-roles={r(p.roles)}>{tp(p.text[lang])}</li>
+              ))}
+            </ul>
+          </div>
+        );
+      })
+    }
+  </section>
+
+  <section class="cv-block grid">
+    <h2 class="cv-label mono">{t(lang, 'cv.education')}</h2>
+    {
+      cv.education.map((e) => (
+        <div class="cv-row">
+          <p class="cv-sub mono muted">{e.years}</p>
+          <p class="cv-body-row">
+            {tp(e.place[lang])}
+            <br />
+            <span class="muted">{e.degree[lang]}</span>
+          </p>
+        </div>
+      ))
+    }
+  </section>
+</article>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.cv');
+  const ROLES = ['all', 'graphic', 'brand', 'motion', 'art', 'digital'];
+
+  function setRole(role: string, push = true) {
+    if (!root) return;
+    if (!ROLES.includes(role)) role = 'all';
+    root.dataset.role = role;
+    root.querySelectorAll<HTMLButtonElement>('[data-set-role]').forEach((b) => {
+      b.setAttribute('aria-pressed', String(b.dataset.setRole === role));
+    });
+    if (push) {
+      const url = new URL(location.href);
+      if (role === 'all') url.searchParams.delete('role');
+      else url.searchParams.set('role', role);
+      history.replaceState(null, '', url);
+    }
+  }
+
+  setRole(new URLSearchParams(location.search).get('role') ?? 'all', false);
+
+  root?.querySelectorAll<HTMLButtonElement>('[data-set-role]').forEach((b) => {
+    b.addEventListener('click', () => setRole(b.dataset.setRole ?? 'all'));
+  });
+
+  // ссылка на текущую версию
+  root?.querySelector<HTMLButtonElement>('[data-copy]')?.addEventListener('click', async (e) => {
+    const btn = e.currentTarget as HTMLButtonElement;
+    const label = btn.textContent;
+    try {
+      await navigator.clipboard.writeText(location.href);
+      btn.textContent = btn.dataset.copied ?? label;
+      setTimeout(() => (btn.textContent = label), 1800);
+    } catch {
+      prompt('', location.href);
+    }
+  });
+
+  // PDF выбранной версии: печать браузера, имя файла — по направлению
+  root?.querySelector<HTMLButtonElement>('[data-print]')?.addEventListener('click', () => {
+    const before = document.title;
+    const role = root.dataset.role;
+    document.title = `Butusova_CV${role && role !== 'all' ? `_${role}` : ''}`;
+    window.print();
+    document.title = before;
+  });
+</script>
+
+<style>
+  /* ——— шапка ——— */
+  .cv-head {
+    padding-top: var(--ids__spacer-l);
+    align-items: start;
+    row-gap: var(--ids__spacer-m);
+  }
+
+  .cv-name {
+    grid-column: 1 / span 9;
+    grid-row: 1;
+    margin: 0;
+    font-family: var(--f-serif);
+    font-weight: 400;
+    font-size: min(calc((100vw - 2 * var(--page-margin)) * 0.085), 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+
+  .cv-photo {
+    grid-column: 10 / span 3;
+    grid-row: 1 / span 3;
+    margin: 0;
+    aspect-ratio: 3 / 4;
+    display: grid;
+    place-items: center;
+    background: var(--ids__surface);
+  }
+
+  .cv-meta {
+    grid-column: var(--col) / span 3;
+    grid-row: 2;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cv-contacts a {
+    text-transform: none;
+    border-bottom: var(--ids__border-width-s) solid var(--ids__border);
+    transition: border-color var(--ids__duration-base) var(--ids__easing-base);
+  }
+
+  .cv-contacts a:hover {
+    border-color: var(--ids__text);
+    transition-duration: var(--ids__duration-instant);
+  }
+
+  /* строка фокуса видна только у выбранного направления */
+  .cv-focus {
+    grid-column: 1 / span 9;
+    grid-row: 3;
+    display: none;
+    font-size: 1.5rem;
+    line-height: calc(var(--ids__density) / 1.1);
+    letter-spacing: -0.015em;
+  }
+
+  .cv[data-role='graphic'] [data-focus='graphic'],
+  .cv[data-role='brand'] [data-focus='brand'],
+  .cv[data-role='motion'] [data-focus='motion'],
+  .cv[data-role='art'] [data-focus='art'],
+  .cv[data-role='digital'] [data-focus='digital'] {
+    display: block;
+  }
+
+  /* ——— переключатель ——— */
+  .cv-switch {
+    margin-top: var(--ids__spacer-l);
+    padding-block: var(--ids__spacer-s);
+    border-block: var(--ids__border-width-s) solid var(--ids__text);
+    row-gap: var(--ids__gap-s);
+    align-items: baseline;
+  }
+
+  .cv-switch-label {
+    grid-column: 1 / span 3;
+  }
+
+  .cv-switch-roles,
+  .cv-switch-actions {
+    grid-column: 4 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ids__gap-s) var(--ids__gap-l);
+  }
+
+  .cv-switch button {
+    all: unset;
+    cursor: pointer;
+    border-bottom: var(--ids__border-width-s) solid transparent;
+    transition: border-color var(--ids__duration-base) var(--ids__easing-base);
+  }
+
+  .cv-switch-roles button {
+    color: var(--ids__text-caption);
+  }
+
+  .cv-switch-roles button[aria-pressed='true'] {
+    color: var(--ids__text);
+    border-color: var(--ids__text);
+  }
+
+  .cv-switch button:hover {
+    color: var(--ids__text);
+    border-color: var(--ids__text);
+    transition-duration: var(--ids__duration-instant);
+  }
+
+  .cv-switch button:focus-visible {
+    outline: var(--ids__border-width-s) solid var(--ids__text);
+    outline-offset: 0.2em;
+  }
+
+  .cv-switch-actions button {
+    border-color: var(--ids__border);
+  }
+
+  /* ——— блоки ——— */
+  .cv-block {
+    margin-top: var(--ids__spacer-l);
+    row-gap: var(--ids__spacer-s);
+    align-items: start;
+  }
+
+  .cv-label {
+    grid-column: 1 / span 3;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  .cv-body {
+    grid-column: 7 / span 6;
+  }
+
+  /* строка внутри блока: подпись с 4-й колонки, содержание с 7-й */
+  .cv-row {
+    grid-column: 4 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    padding-bottom: var(--ids__spacer-s);
+    border-bottom: var(--ids__border-width-s) solid var(--ids__border);
+  }
+
+  .cv-block > .cv-label + .cv-row,
+  .cv-label + .cv-body {
+    grid-row: 1;
+  }
+
+  .cv-sub {
+    grid-column: 1 / span 3;
+    margin: 0;
+  }
+
+  .cv-tags,
+  .cv-points,
+  .cv-body-row {
+    grid-column: 4 / -1;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cv-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.35em;
+  }
+
+  .cv-tags li:not(:last-child)::after {
+    content: ',';
+  }
+
+  .cv-points li + li {
+    margin-top: calc(var(--ids__density) * 0.3em);
+  }
+
+  [data-roles] {
+    transition: opacity var(--ids__duration-base) var(--ids__easing-base);
+  }
+
+  /* выбранное направление: подходящее остаётся, остальное гаснет */
+  .cv[data-role='graphic'] [data-roles]:not([data-roles~='graphic']),
+  .cv[data-role='brand'] [data-roles]:not([data-roles~='brand']),
+  .cv[data-role='motion'] [data-roles]:not([data-roles~='motion']),
+  .cv[data-role='art'] [data-roles]:not([data-roles~='art']),
+  .cv[data-role='digital'] [data-roles]:not([data-roles~='digital']) {
+    opacity: 0.22;
+  }
+
+  /* ——— телефон ——— */
+  @media (width < 768px) {
+    .cv-name {
+      grid-column: 1 / span 4;
+      font-size: calc((100vw - 2 * var(--page-margin)) * 0.14);
+    }
+    .cv-photo {
+      grid-column: 5 / span 2;
+      grid-row: 1;
+    }
+    .cv-meta {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+    .cv-focus {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+    .cv-switch-label,
+    .cv-switch-roles,
+    .cv-switch-actions {
+      grid-column: 1 / -1;
+    }
+    .cv-label {
+      grid-column: 1 / -1;
+    }
+    .cv-body,
+    .cv-row {
+      grid-column: 1 / -1;
+    }
+    .cv-block > .cv-label + .cv-row,
+    .cv-label + .cv-body {
+      grid-row: auto;
+    }
+    .cv-sub {
+      grid-column: 1 / -1;
+      margin-bottom: var(--ids__gap-s);
+    }
+    .cv-tags,
+    .cv-points,
+    .cv-body-row {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* ——— PDF: только выбранная версия, без меню сайта и фактуры ——— */
+  @media print {
+    @page {
+      size: A4;
+      margin: 14mm 12mm;
+    }
+    :global(html) {
+      font-size: 9.5pt;
+    }
+    :global(.header),
+    :global(.footer),
+    :global(.guides),
+    .cv-switch,
+    .cv-photo:not(:has(img)) {
+      display: none !important;
+    }
+    :global(body::before),
+    :global(body::after) {
+      display: none !important;
+    }
+    :global(body) {
+      background: #fff;
+    }
+    .cv-name {
+      font-size: 32pt;
+      grid-column: 1 / -1;
+    }
+    .cv-block {
+      margin-top: 6mm;
+      break-inside: auto;
+    }
+    .cv-row {
+      break-inside: avoid;
+    }
+    .cv[data-role='graphic'] [data-roles]:not([data-roles~='graphic']),
+    .cv[data-role='brand'] [data-roles]:not([data-roles~='brand']),
+    .cv[data-role='motion'] [data-roles]:not([data-roles~='motion']),
+    .cv[data-role='art'] [data-roles]:not([data-roles~='art']),
+    .cv[data-role='digital'] [data-roles]:not([data-roles~='digital']) {
+      display: none;
+    }
+  }
+</style>
