@@ -35,7 +35,8 @@ export const cv = {
   contacts: [
     { label: { ru: 'Telegram', en: 'Telegram' }, value: '@kzaraza', href: 'https://t.me/kzaraza' },
     { label: { ru: 'E-mail', en: 'E-mail' }, value: 'butusovakaterinav@yandex.ru', href: 'mailto:butusovakaterinav@yandex.ru' },
-    // TODO: ссылки на Behance и Dprofile — Катерина пришлёт
+    { label: { ru: 'Behance', en: 'Behance' }, value: 'worldstoriesb', href: 'https://www.behance.net/worldstoriesb' },
+    { label: { ru: 'Dprofile', en: 'Dprofile' }, value: 'katerina.zaraza', href: 'https://dprofile.ru/katerina.zaraza' },
   ] as { label: L; value: string; href: string }[],
 
   about: {

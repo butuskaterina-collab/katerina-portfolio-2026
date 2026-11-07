@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import photo from '../assets/cv/photo.jpg';
 import { t, type Lang } from '../i18n/ui';
 import { typograph } from '../lib/typograph';
 import { cv, ROLES, roleNames, type Role } from '../data/cv';
@@ -25,8 +27,7 @@ const switchRoles = ['all', ...ROLES] as const;
     <h1 class="cv-name">{cv.name[lang]}</h1>
 
     <figure class="cv-photo">
-      <!-- TODO: фото Катерина пришлёт -->
-      <span class="mono muted">{t(lang, 'cv.photo')}</span>
+      <Image src={photo} alt={cv.name[lang]} widths={[400, 828]} sizes="(width < 768px) 33vw, 25vw" loading="eager" />
     </figure>
 
     <p class="cv-meta mono" style="--col:1">
@@ -217,9 +218,14 @@ const switchRoles = ['all', ...ROLES] as const;
     grid-row: 1 / span 3;
     margin: 0;
     aspect-ratio: 3 / 4;
-    display: grid;
-    place-items: center;
     background: var(--ids__surface);
+  }
+
+  .cv-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 45% 50%;
   }
 
   .cv-meta {
@@ -457,9 +463,40 @@ const switchRoles = ['all', ...ROLES] as const;
     :global(body) {
       background: #fff;
     }
+    /* шапка на листе: имя и фото в первой строке, три колонки подписей под ними */
     .cv-name {
       font-size: 32pt;
+      grid-column: 1 / span 4;
+      grid-row: 1;
+    }
+    .cv-photo {
+      grid-column: 5 / span 2;
+      grid-row: 1 / span 3;
+    }
+    .cv-meta {
+      grid-column: span 2;
+      grid-row: 2;
+    }
+    .cv-meta[style*='--col:1'] {
+      grid-column: 1 / span 2;
+    }
+    .cv-meta[style*='--col:4'] {
+      grid-column: 3 / span 2;
+    }
+    .cv-meta[style*='--col:7'] {
+      grid-column: 1 / span 4;
+      grid-row: 3;
+    }
+    .cv-focus-wrap {
       grid-column: 1 / -1;
+      grid-row: 4;
+    }
+    /* часть пунктов скрыта — запятые дали бы хвост, поэтому на листе разделяет пробел */
+    .cv-tags {
+      gap: 0 1.2em;
+    }
+    .cv-tags li::after {
+      content: none !important;
     }
     .cv-block {
       margin-top: 6mm;
