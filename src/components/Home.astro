@@ -275,9 +275,12 @@ const ARCHIVE_TOTAL = 29; // папок в content/ у Катерины
     transition: transform var(--ids__duration-base) var(--ids__easing-base);
   }
 
+  /* тип проекта всегда в одну строку: строки одной высоты, подписи на одной базовой линии с названием
+     (самое длинное, «визуальное исследование», занимает почти две колонки, до года ещё есть место) */
   .r-type {
     grid-column: 10 / span 2;
     color: var(--ids__text-secondary);
+    white-space: nowrap;
   }
 
   .r-year {
