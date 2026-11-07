@@ -73,7 +73,7 @@ const switchRoles = ['all', ...ROLES] as const;
     </div>
     <div class="cv-switch-actions">
       <button type="button" data-copy data-copied={t(lang, 'cv.copied')}>{t(lang, 'cv.link')}</button>
-      <button type="button" data-print>{t(lang, 'cv.pdf')} ↓</button>
+      <a href={`/cv/Butusova_CV_all_${lang}.pdf`} download="Butusova_CV.pdf" data-pdf={lang}>{t(lang, 'cv.pdf')} ↓</a>
     </div>
   </nav>
 
@@ -129,7 +129,7 @@ const switchRoles = ['all', ...ROLES] as const;
     }
   </section>
 
-  <section class="cv-block grid">
+  <section class="cv-block cv-edu grid">
     <h2 class="cv-label mono">{t(lang, 'cv.education')}</h2>
     {
       cv.education.map((e) => (
@@ -157,6 +157,12 @@ const switchRoles = ['all', ...ROLES] as const;
     root.querySelectorAll<HTMLButtonElement>('[data-set-role]').forEach((b) => {
       b.setAttribute('aria-pressed', String(b.dataset.setRole === role));
     });
+    // готовый PDF выбранной версии (файлы печатает scripts/cv-pdf.mjs)
+    const pdf = root.querySelector<HTMLAnchorElement>('[data-pdf]');
+    if (pdf) {
+      pdf.href = `/cv/Butusova_CV_${role}_${pdf.dataset.pdf}.pdf`;
+      pdf.download = `Butusova_CV${role === 'all' ? '' : `_${role}`}.pdf`;
+    }
     if (push) {
       const url = new URL(location.href);
       if (role === 'all') url.searchParams.delete('role');
@@ -184,14 +190,6 @@ const switchRoles = ['all', ...ROLES] as const;
     }
   });
 
-  // PDF выбранной версии: печать браузера, имя файла — по направлению
-  root?.querySelector<HTMLButtonElement>('[data-print]')?.addEventListener('click', () => {
-    const before = document.title;
-    const role = root.dataset.role;
-    document.title = `Butusova_CV${role && role !== 'all' ? `_${role}` : ''}`;
-    window.print();
-    document.title = before;
-  });
 </script>
 
 <style>
@@ -292,7 +290,8 @@ const switchRoles = ['all', ...ROLES] as const;
     gap: var(--ids__gap-s) var(--ids__gap-l);
   }
 
-  .cv-switch button {
+  .cv-switch button,
+  .cv-switch a {
     all: unset;
     cursor: pointer;
     border-bottom: var(--ids__border-width-s) solid transparent;
@@ -308,18 +307,21 @@ const switchRoles = ['all', ...ROLES] as const;
     border-color: var(--ids__text);
   }
 
-  .cv-switch button:hover {
+  .cv-switch button:hover,
+  .cv-switch a:hover {
     color: var(--ids__text);
     border-color: var(--ids__text);
     transition-duration: var(--ids__duration-instant);
   }
 
-  .cv-switch button:focus-visible {
+  .cv-switch button:focus-visible,
+  .cv-switch a:focus-visible {
     outline: var(--ids__border-width-s) solid var(--ids__text);
     outline-offset: 0.2em;
   }
 
-  .cv-switch-actions button {
+  .cv-switch-actions button,
+  .cv-switch-actions a {
     border-color: var(--ids__border);
   }
 
@@ -502,8 +504,40 @@ const switchRoles = ['all', ...ROLES] as const;
       margin-top: 6mm;
       break-inside: auto;
     }
-    .cv-row {
+    .cv-row,
+    .cv-row li,
+    .cv-row p,
+    .cv-label {
       break-inside: avoid;
+    }
+    .cv-label {
+      break-after: avoid;
+    }
+    :global(p) {
+      orphans: 3;
+      widows: 3;
+    }
+    .cv-photo {
+      background: none;
+    }
+    /* лишняя высота фото уходит вниз шапки, подписи стоят плотно под именем */
+    .cv-head {
+      grid-template-rows: auto auto 1fr;
+    }
+    .cv-points li + li {
+      margin-top: 0.15em;
+    }
+    /* короткий блок не разрывается: заголовок не остаётся один внизу листа */
+    .cv-edu {
+      break-inside: avoid;
+    }
+    /* группа навыков без пунктов этого направления на лист не попадает */
+    .cv[data-role='graphic'] .cv-row:has(.cv-tags):not(:has([data-roles~='graphic'])),
+    .cv[data-role='brand'] .cv-row:has(.cv-tags):not(:has([data-roles~='brand'])),
+    .cv[data-role='motion'] .cv-row:has(.cv-tags):not(:has([data-roles~='motion'])),
+    .cv[data-role='art'] .cv-row:has(.cv-tags):not(:has([data-roles~='art'])),
+    .cv[data-role='digital'] .cv-row:has(.cv-tags):not(:has([data-roles~='digital'])) {
+      display: none;
     }
     .cv[data-role='graphic'] [data-roles]:not([data-roles~='graphic']),
     .cv[data-role='brand'] [data-roles]:not([data-roles~='brand']),
