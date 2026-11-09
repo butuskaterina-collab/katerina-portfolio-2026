@@ -9,6 +9,7 @@ interface Props {
 }
 const { lang } = Astro.props;
 const pad = (n: number) => String(n).padStart(2, '0');
+import '../styles/page-head.css';
 ---
 
 <!--
@@ -17,9 +18,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
   кадр, тип и ссылка на 10-й колонке.
 -->
 <section class="texts">
-  <header class="tx-head grid">
-    <h1 class="tx-title">{t(lang, 'texts.title')} <span class="tx-count mono muted">({pad(texts.length)})</span></h1>
-    <p class="tx-lead">{t(lang, 'texts.lead')}</p>
+  <header class="page-head grid">
+    <h1 class="page-title">{t(lang, 'texts.title')} <span class="page-count mono muted">({pad(texts.length)})</span></h1>
+    <p class="page-lead">{t(lang, 'texts.lead')}</p>
   </header>
 
   <ol class="tx-list">
@@ -45,6 +46,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
               <span class="muted">{x.type[lang]}</span>
               <br />
               <a href={x.href} target="_blank" rel="noopener">{t(lang, 'texts.read')} ↗</a>
+              {x.video && (
+                <>
+                  <br />
+                  <a href={x.video} target="_blank" rel="noopener">{t(lang, 'texts.watch')} ↗</a>
+                </>
+              )}
             </p>
           </div>
         </li>
@@ -54,30 +61,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </section>
 
 <style>
-  .tx-head {
-    padding-top: var(--ids__spacer-l);
-    align-items: end;
-  }
 
-  .tx-title {
-    grid-column: 1 / span 6;
-    margin: 0;
-    font-family: var(--f-serif);
-    font-weight: 400;
-    font-size: min(calc((100vw - 2 * var(--page-margin)) * 0.085), 8rem);
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-  }
 
-  .tx-count {
-    vertical-align: top;
-    letter-spacing: 0.02em;
-  }
 
-  .tx-lead {
-    grid-column: 10 / span 3;
-    color: var(--ids__text-secondary);
-  }
 
   .tx-list {
     margin: var(--ids__spacer-xl) 0 0;
@@ -163,17 +149,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
   @media (width < 768px) {
     .tx-item {
       grid-template-rows: auto;
-    }
-    .tx-head {
-      padding-top: var(--ids__spacer-m);
-      row-gap: var(--ids__gap-l);
-    }
-    .tx-title {
-      grid-column: 1 / -1;
-      font-size: calc((100vw - 2 * var(--page-margin)) * 0.14);
-    }
-    .tx-lead {
-      grid-column: 2 / -1;
     }
     .tx-list {
       margin-top: var(--ids__spacer-l);

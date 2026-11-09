@@ -20,6 +20,7 @@ const filters = [
 ];
 const pad = (n: number) => String(n).padStart(2, '0');
 let n = projectsCount + 1;
+import '../styles/page-head.css';
 ---
 
 <!--
@@ -29,9 +30,9 @@ let n = projectsCount + 1;
   Фильтр сверху прячет строки одного вида; пустой год прячется вместе с ними.
 -->
 <section class="archive" data-show="all">
-  <header class="ar-head grid">
-    <h1 class="ar-title">{t(lang, 'archive.title')} <span class="ar-count mono muted">({pad(archive.length)})</span></h1>
-    <p class="ar-lead">{t(lang, 'archive.lead')}</p>
+  <header class="page-head grid">
+    <h1 class="page-title">{t(lang, 'archive.title')} <span class="page-count mono muted">({pad(archive.length)})</span></h1>
+    <p class="page-lead">{t(lang, 'archive.lead')}</p>
   </header>
 
   <nav class="ar-filter grid mono" aria-label={t(lang, 'archive.show')}>
@@ -96,30 +97,9 @@ let n = projectsCount + 1;
 </script>
 
 <style>
-  .ar-head {
-    padding-top: var(--ids__spacer-l);
-    align-items: end;
-  }
 
-  .ar-title {
-    grid-column: 1 / span 6;
-    margin: 0;
-    font-family: var(--f-serif);
-    font-weight: 400;
-    font-size: min(calc((100vw - 2 * var(--page-margin)) * 0.085), 8rem);
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-  }
 
-  .ar-count {
-    vertical-align: top;
-    letter-spacing: 0.02em;
-  }
 
-  .ar-lead {
-    grid-column: 10 / span 3;
-    color: var(--ids__text-secondary);
-  }
 
   /* ——— фильтр: подписи на осях 1 и 4, как переключатель в CV ——— */
   .ar-filter {
@@ -199,17 +179,6 @@ let n = projectsCount + 1;
   }
 
   @media (width < 768px) {
-    .ar-head {
-      padding-top: var(--ids__spacer-m);
-      row-gap: var(--ids__gap-l);
-    }
-    .ar-title {
-      grid-column: 1 / -1;
-      font-size: calc((100vw - 2 * var(--page-margin)) * 0.14);
-    }
-    .ar-lead {
-      grid-column: 2 / -1;
-    }
     .ar-filter p {
       grid-column: 1 / -1;
       margin-bottom: var(--ids__gap-s);

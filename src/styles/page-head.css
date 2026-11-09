@@ -1,0 +1,46 @@
+/*
+  Шапка разделов «Проекты», «Архив», «Тексты» — одна на всех, как имя в CV:
+  заголовок антиквой с 1-й колонки, счётчик рядом, пояснение на 10-й колонке.
+  Всё выровнено по верху: высота пояснения не двигает заголовок, и на всех страницах
+  он стоит на одной высоте.
+*/
+.page-head {
+  padding-top: var(--ids__spacer-l);
+  align-items: start;
+}
+
+.page-title {
+  grid-column: 1 / span 9;
+  margin: 0;
+  font-family: var(--f-serif);
+  font-weight: 400;
+  /* кегль — от ширины поля набора, как у имени в CV */
+  font-size: min(calc((100vw - 2 * var(--page-margin)) * 0.085), 8rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+.page-count {
+  vertical-align: top;
+  letter-spacing: 0.02em;
+}
+
+.page-lead {
+  grid-column: 10 / span 3;
+  margin: 0;
+  color: var(--ids__text-secondary);
+}
+
+@media (width < 768px) {
+  .page-head {
+    padding-top: var(--ids__spacer-m);
+    row-gap: var(--ids__gap-l);
+  }
+  .page-title {
+    grid-column: 1 / -1;
+    font-size: calc((100vw - 2 * var(--page-margin)) * 0.14);
+  }
+  .page-lead {
+    grid-column: 2 / -1;
+  }
+}

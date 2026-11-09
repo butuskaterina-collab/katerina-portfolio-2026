@@ -57,6 +57,7 @@ export const ui = {
     'texts.title': 'Тексты',
     'texts.lead': 'Визуальные исследования и видеоэссе о кино, медиа и искусстве. Пока тексты живут на сайте Школы дизайна, скоро переедут сюда.',
     'texts.read': 'Читать',
+    'texts.watch': 'Смотреть видео',
   },
   en: {
     'meta.title': 'Katerina Butusova — communication designer',
@@ -112,6 +113,7 @@ export const ui = {
     'texts.title': 'Texts',
     'texts.lead': 'Visual research and video essays on film, media and art. For now the texts live on the School of Design website; they will move here soon.',
     'texts.read': 'Read',
+    'texts.watch': 'Watch video',
   },
 } as const;
 

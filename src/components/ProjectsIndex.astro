@@ -21,6 +21,7 @@ const cards = [
     .filter((s) => !readySlugs.has(s.slug) && !research.includes(s.type.ru))
     .map((s) => ({ slug: s.slug, title: typograph(s.title[lang]), type: s.type[lang], year: s.year, cover: s.cover, href: undefined })),
 ];
+import '../styles/page-head.css';
 ---
 
 <!--
@@ -28,9 +29,9 @@ const cards = [
   обложки в три колонки по 4 колонки сетки, средняя колонка опущена — контролируемый сдвиг.
 -->
 <section class="projects">
-  <header class="pr-head grid">
-    <h1 class="pr-title">{t(lang, 'projects.title')} <span class="pr-count mono muted">({String(cards.length).padStart(2, '0')})</span></h1>
-    <p class="pr-lead">{t(lang, 'projects.lead')}</p>
+  <header class="page-head grid">
+    <h1 class="page-title">{t(lang, 'projects.title')} <span class="page-count mono muted">({String(cards.length).padStart(2, '0')})</span></h1>
+    <p class="page-lead">{t(lang, 'projects.lead')}</p>
   </header>
 
   <ol class="cards grid">
@@ -56,30 +57,9 @@ const cards = [
 </section>
 
 <style>
-  .pr-head {
-    padding-top: var(--ids__spacer-l);
-    align-items: end;
-  }
 
-  .pr-title {
-    grid-column: 1 / span 6;
-    margin: 0;
-    font-family: var(--f-serif);
-    font-weight: 400;
-    font-size: min(calc((100vw - 2 * var(--page-margin)) * 0.085), 8rem);
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-  }
 
-  .pr-count {
-    vertical-align: top;
-    letter-spacing: 0.02em;
-  }
 
-  .pr-lead {
-    grid-column: 10 / span 3;
-    color: var(--ids__text-secondary);
-  }
 
   .cards {
     margin: var(--ids__spacer-xl) 0 0;
@@ -147,14 +127,6 @@ const cards = [
   }
 
   @media (width < 768px) {
-    .pr-title {
-      grid-column: 1 / -1;
-      font-size: calc((100vw - 2 * var(--page-margin)) * 0.16);
-    }
-    .pr-lead {
-      grid-column: 2 / -1;
-      margin-top: var(--ids__gap-l);
-    }
     .cards {
       margin-top: var(--ids__spacer-l);
     }

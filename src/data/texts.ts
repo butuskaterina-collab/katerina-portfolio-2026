@@ -3,7 +3,7 @@ import type { ImageMetadata } from 'astro';
 /*
   Раздел «Тексты» — визуальные исследования из папки «визуальные исследования» в профиле Катерины на HSE Design
   (pro.hsedesign.com/account/zaraza). Аннотации собраны из её текстов, без добавлений.
-  Пока у текстов нет своих страниц, «Читать» ведёт на pro.hsedesign.com.
+  Пока у текстов нет своих страниц, «Читать» ведёт на pro.hsedesign.com, «Смотреть видео» — на YouTube или Kinescope.
   Обложки: положить файл в src/assets/texts/<key>.jpg — он подхватится сам.
   Не вошли: «a la russe — „Русские сезоны“ и мода» и «Renaissancecore» (страницы закрыты модератором),
   «Thinking about communication theory: emolla» (командная, Катерина убрала её из своей папки).
@@ -14,7 +14,19 @@ type L = { ru: string; en: string };
 const covers = import.meta.glob<{ default: ImageMetadata }>('../assets/texts/*.jpg', { eager: true });
 const hse = (id: string) => `https://pro.hsedesign.com/project/${id}`;
 
-const entries: { key: string; title: L; type: L; date: string; id: string; lead: L }[] = [
+const entries: { key: string; title: L; type: L; date: string; id: string; lead: L; video?: string }[] = [
+  {
+    key: 'aura',
+    title: { ru: 'Аура повседневного', en: 'The Aura of the Everyday' },
+    type: { ru: 'визуальное исследование, диплом', en: 'visual research, graduation project' },
+    date: '2025-12-12',
+    id: 'aura-povsednevnogo-e3db2e4fc8ce4ef28aa4084e4a271ccc',
+    video: 'https://kinescope.io/qtKsnJtYU5LgxVg8xqpmsZ',
+    lead: {
+      ru: 'Почему простая вещь вдруг начинает казаться ценной? Эксплейнер на примере кусочка масла: три акта — свет, сосуд, жест.',
+      en: 'Why does a simple thing suddenly start to feel precious? An explainer built around a piece of butter, in three acts: light, vessel, gesture.',
+    },
+  },
   {
     key: 'apple',
     title: { ru: 'Минимализм Apple: как пустота создаёт ценность', en: 'Apple’s minimalism: how emptiness creates value' },
@@ -54,6 +66,7 @@ const entries: { key: string; title: L; type: L; date: string; id: string; lead:
     type: { ru: 'видеоэссе', en: 'video essay' },
     date: '2025-01-10',
     id: 'e26827d55cbd4ea78db2f5ef27c8873e',
+    video: 'https://www.youtube.com/watch?v=Kt303D8WxuI',
     lead: {
       ru: 'Тренд female rage из TikTok и то, что за ним стоит: женский гнев от изобразительного искусства и культовых фильмов с male gaze до современных интерпретаций.',
       en: 'The female rage trend from TikTok and what lies behind it: women’s anger from fine art and cult films shaped by the male gaze to contemporary interpretations.',
