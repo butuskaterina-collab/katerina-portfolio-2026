@@ -55,7 +55,7 @@ export const ui = {
     'archive.work': 'Работа',
     'archive.workLabel': 'работа',
     'texts.title': 'Тексты',
-    'texts.lead': 'Визуальные исследования: кино, музыка, история и вещи вокруг нас. Пока тексты живут на сайте Школы дизайна, скоро переедут сюда.',
+    'texts.lead': 'Визуальные исследования и видеоэссе о кино, медиа и искусстве. Пока тексты живут на сайте Школы дизайна, скоро переедут сюда.',
     'texts.read': 'Читать',
   },
   en: {
@@ -110,7 +110,7 @@ export const ui = {
     'archive.work': 'Work',
     'archive.workLabel': 'work',
     'texts.title': 'Texts',
-    'texts.lead': 'Visual research on film, music, history and the things around us. For now the texts live on the School of Design website; they will move here soon.',
+    'texts.lead': 'Visual research and video essays on film, media and art. For now the texts live on the School of Design website; they will move here soon.',
     'texts.read': 'Read',
   },
 } as const;
