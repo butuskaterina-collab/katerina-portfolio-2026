@@ -1,0 +1,111 @@
+/*
+  Таблица проектов — общая для главной и архива.
+  Строка: номер · название (с главной оси, 4-я колонка) · тип (10-я колонка) · год.
+  При наведении номер гаснет, название уходит влево на три колонки,
+  в освободившемся месте (колонки 7–9) проявляется кадр проекта.
+*/
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--ids__border-width-s) solid var(--ids__text);
+}
+
+.rows li {
+  border-bottom: var(--ids__border-width-s) solid var(--ids__border);
+}
+
+/* строка: при наведении номер гаснет, название уходит влево на три колонки (к левому полю),
+   а в освободившемся месте — колонки 7–9 — проявляется кадр проекта во всю высоту строки */
+.row {
+  position: relative;
+  align-items: baseline;
+  padding-block: var(--ids__spacer-s);
+  container-type: inline-size;
+  /* ширина трёх колонок с межколонниками — на столько сдвигается название (100cqw — поле набора без полей страницы) */
+  --shift: calc((100cqw - (var(--page-cols) - 1) * var(--page-gutter)) / var(--page-cols) * 3 + var(--page-gutter) * 3);
+}
+
+.r-num {
+  grid-column: 1 / span 3;
+  transition: opacity var(--ids__duration-base) var(--ids__easing-base);
+}
+
+.r-title {
+  grid-column: 4 / span 6;
+  grid-row: 1;
+  position: relative;
+  font-size: 1.5rem; /* кегль h3 в IDS */
+  line-height: calc(var(--ids__density) / 1.1);
+  letter-spacing: -0.015em;
+  transition: transform var(--ids__duration-base) var(--ids__easing-base);
+}
+
+/* тип проекта всегда в одну строку: строки одной высоты, подписи на одной базовой линии с названием
+   (самое длинное, «визуальное исследование», занимает почти две колонки, до года ещё есть место) */
+.r-type {
+  grid-column: 10 / span 2;
+  color: var(--ids__text-secondary);
+  white-space: nowrap;
+}
+
+.r-year {
+  grid-column: 12 / span 1;
+  justify-self: end;
+}
+
+.r-thumb {
+  grid-column: 7 / span 3;
+  grid-row: 1;
+  align-self: stretch;
+  /* выходит на поля строки сверху и снизу — кадр во всю высоту ячейки */
+  margin-block: calc(-1 * var(--ids__spacer-s));
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity var(--ids__duration-base) var(--ids__easing-base);
+}
+
+/* картинка не влияет на высоту строки: занимает ячейку целиком и обрезается */
+.r-thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .row:hover .r-num {
+    opacity: 0;
+    transition-duration: var(--ids__duration-instant);
+  }
+  .row:hover .r-title {
+    transform: translateX(calc(-1 * var(--shift)));
+    transition-duration: var(--ids__duration-instant);
+  }
+  .row:hover .r-thumb {
+    opacity: 1;
+    transition-duration: var(--ids__duration-instant);
+  }
+}
+
+/* телефон: 6 колонок, ось — 2-я колонка */
+@media (width < 768px) {
+  .r-num {
+    grid-column: 1 / span 1;
+  }
+  .r-title {
+    grid-column: 2 / -1;
+  }
+  .r-type {
+    grid-column: 2 / span 4;
+    margin-top: var(--ids__gap-s);
+  }
+  .r-year {
+    grid-column: 6 / span 1;
+  }
+  .r-thumb {
+    display: none;
+  }
+}

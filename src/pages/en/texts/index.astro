@@ -1,0 +1,9 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Texts from '../../../components/Texts.astro';
+import { t } from '../../../i18n/ui';
+---
+
+<Base lang="en" path="/texts/" title={`${t('en', 'texts.title')} — ${t('en', 'meta.title')}`}>
+  <Texts lang="en" />
+</Base>

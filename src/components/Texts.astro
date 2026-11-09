@@ -1,0 +1,198 @@
+---
+import { Image } from 'astro:assets';
+import { t, type Lang } from '../i18n/ui';
+import { texts } from '../data/texts';
+import { typograph } from '../lib/typograph';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<!--
+  «Тексты» — оглавление, как в журнале: не таблица (как в архиве) и не лист обложек (как в проектах).
+  Запись: номер и год на 1-й колонке · название антиквой и аннотация с главной оси (4-я колонка) ·
+  кадр, тип и ссылка на 10-й колонке.
+-->
+<section class="texts">
+  <header class="tx-head grid">
+    <h1 class="tx-title">{t(lang, 'texts.title')} <span class="tx-count mono muted">({pad(texts.length)})</span></h1>
+    <p class="tx-lead">{t(lang, 'texts.lead')}</p>
+  </header>
+
+  <ol class="tx-list">
+    {
+      texts.map((x, i) => (
+        <li class="tx-item grid">
+          <p class="tx-meta mono">
+            <span class="muted">{pad(i + 1)}</span>
+            <br />
+            {x.year}
+          </p>
+          <h2 class="tx-name">
+            <a href={x.href} target="_blank" rel="noopener">{typograph(x.title[lang])}</a>
+          </h2>
+          <p class="tx-text">{typograph(x.lead[lang])}</p>
+          <div class="tx-side">
+            {x.thumb && (
+              <figure class="tx-thumb">
+                <Image src={x.thumb} alt="" width={720} widths={[360, 720]} sizes="(width < 768px) 100vw, 25vw" loading={i < 2 ? 'eager' : 'lazy'} />
+              </figure>
+            )}
+            <p class="tx-type mono">
+              <span class="muted">{x.type[lang]}</span>
+              <br />
+              <a href={x.href} target="_blank" rel="noopener">{t(lang, 'texts.read')} ↗</a>
+            </p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .tx-head {
+    padding-top: var(--ids__spacer-l);
+    align-items: end;
+  }
+
+  .tx-title {
+    grid-column: 1 / span 6;
+    margin: 0;
+    font-family: var(--f-serif);
+    font-weight: 400;
+    font-size: min(calc((100vw - 2 * var(--page-margin)) * 0.085), 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+
+  .tx-count {
+    vertical-align: top;
+    letter-spacing: 0.02em;
+  }
+
+  .tx-lead {
+    grid-column: 10 / span 3;
+    color: var(--ids__text-secondary);
+  }
+
+  .tx-list {
+    margin: var(--ids__spacer-xl) 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--ids__border-width-s) solid var(--ids__text);
+  }
+
+  .tx-item {
+    padding-block: var(--ids__spacer-s) var(--ids__spacer-l);
+    border-bottom: var(--ids__border-width-s) solid var(--ids__border);
+    align-items: start;
+    /* лишняя высота кадра справа уходит под аннотацию, а не между названием и текстом */
+    grid-template-rows: auto 1fr;
+  }
+
+  .tx-meta {
+    grid-column: 1 / span 3;
+    grid-row: 1 / span 2;
+    margin: 0;
+  }
+
+  .tx-name {
+    grid-column: 4 / span 6;
+    grid-row: 1;
+    margin: 0;
+    font-family: var(--f-serif);
+    font-weight: 400;
+    font-size: 3rem;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .tx-name a {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 var(--ids__border-width-s) no-repeat;
+    transition: background-size var(--ids__duration-base) var(--ids__easing-base);
+  }
+
+  .tx-name a:hover {
+    background-size: 100% var(--ids__border-width-s);
+    transition-duration: var(--ids__duration-instant);
+  }
+
+  .tx-text {
+    grid-column: 4 / span 5;
+    grid-row: 2;
+    margin: var(--ids__spacer-s) 0 0;
+  }
+
+  .tx-side {
+    grid-column: 10 / span 3;
+    grid-row: 1 / span 2;
+  }
+
+  .tx-thumb {
+    margin: 0;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--ids__surface);
+  }
+
+  .tx-thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .tx-type {
+    margin: var(--ids__gap-s) 0 0;
+  }
+
+  .tx-type a {
+    border-bottom: var(--ids__border-width-s) solid var(--ids__border);
+    transition: border-color var(--ids__duration-base) var(--ids__easing-base);
+  }
+
+  .tx-type a:hover {
+    border-color: var(--ids__text);
+    transition-duration: var(--ids__duration-instant);
+  }
+
+  @media (width < 768px) {
+    .tx-item {
+      grid-template-rows: auto;
+    }
+    .tx-head {
+      padding-top: var(--ids__spacer-m);
+      row-gap: var(--ids__gap-l);
+    }
+    .tx-title {
+      grid-column: 1 / -1;
+      font-size: calc((100vw - 2 * var(--page-margin)) * 0.14);
+    }
+    .tx-lead {
+      grid-column: 2 / -1;
+    }
+    .tx-list {
+      margin-top: var(--ids__spacer-l);
+    }
+    .tx-meta {
+      grid-column: 1 / span 1;
+      grid-row: 1;
+    }
+    .tx-name {
+      grid-column: 2 / -1;
+      font-size: 2rem;
+    }
+    .tx-text {
+      grid-column: 2 / -1;
+    }
+    .tx-side {
+      grid-column: 2 / -1;
+      grid-row: 3;
+      margin-top: var(--ids__spacer-s);
+    }
+  }
+</style>

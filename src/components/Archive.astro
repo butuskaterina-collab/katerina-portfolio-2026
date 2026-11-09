@@ -1,0 +1,233 @@
+---
+import { Image } from 'astro:assets';
+import { t, localePath, type Lang } from '../i18n/ui';
+import { archive, archiveByYear } from '../data/archive';
+import { typograph } from '../lib/typograph';
+import '../styles/rows.css';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const groups = archiveByYear();
+const projectsCount = archive.filter((i) => i.kind === 'project').length;
+const workCount = archive.length - projectsCount;
+const filters = [
+  { key: 'all', label: t(lang, 'archive.all'), count: archive.length },
+  { key: 'project', label: t(lang, 'archive.projects'), count: projectsCount },
+  { key: 'work', label: t(lang, 'archive.work'), count: workCount },
+];
+const pad = (n: number) => String(n).padStart(2, '0');
+let n = projectsCount + 1;
+---
+
+<!--
+  Архив — та же таблица, что на главной, только все проекты и работа, по годам.
+  Строка проекта: номер · название · тип · → (есть кейс) или ↗ (страница на HSE).
+  Строка работы: «работа · годы» · компания · роль. Работа стоит в году начала.
+  Фильтр сверху прячет строки одного вида; пустой год прячется вместе с ними.
+-->
+<section class="archive" data-show="all">
+  <header class="ar-head grid">
+    <h1 class="ar-title">{t(lang, 'archive.title')} <span class="ar-count mono muted">({pad(archive.length)})</span></h1>
+    <p class="ar-lead">{t(lang, 'archive.lead')}</p>
+  </header>
+
+  <nav class="ar-filter grid mono" aria-label={t(lang, 'archive.show')}>
+    <p class="muted">{t(lang, 'archive.show')}</p>
+    <div class="ar-filter-buttons">
+      {
+        filters.map((f) => (
+          <button type="button" data-show={f.key} aria-pressed={f.key === 'all' ? 'true' : 'false'}>
+            {f.label} <span class="muted">({pad(f.count)})</span>
+          </button>
+        ))
+      }
+    </div>
+  </nav>
+
+  {
+    groups.map(([year, items]) => (
+      <section class="ar-year" aria-labelledby={`y${year}`}>
+        <h2 id={`y${year}`} class="ar-year-title grid">
+          <span class="ar-year-num">{year}</span>
+        </h2>
+        <ol class="rows">
+          {items.map((item) => {
+            const isWork = item.kind === 'work';
+            const period = typeof item.period === 'string' ? item.period : item.period?.[lang];
+            // у работы на месте номера — «работа» и годы, чтобы длинный срок не теснил роль справа
+            const num = isWork ? `${t(lang, 'archive.workLabel')} · ${period}` : String(--n).padStart(3, '0');
+            const href = item.slug ? localePath(lang, `/projects/${item.slug}/`) : item.href;
+            const external = !item.slug && !!item.href;
+            const Tag = href ? 'a' : 'div';
+            const end = isWork ? '' : item.slug ? '→' : '↗';
+            return (
+              <li data-kind={item.kind}>
+                <Tag class="row grid" href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
+                  <span class="r-num mono muted">{num}</span>
+                  {item.thumb && (
+                    <span class="r-thumb" aria-hidden="true">
+                      <Image src={item.thumb} alt="" width={720} widths={[360, 720]} sizes="(width < 768px) 0px, 25vw" loading="lazy" />
+                    </span>
+                  )}
+                  <span class="r-title">{typograph(item.title[lang])}</span>
+                  <span class="r-type mono">{item.type[lang]}</span>
+                  <span class="r-year mono" title={external ? 'pro.hsedesign.com' : undefined}>{end}</span>
+                </Tag>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+    ))
+  }
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.archive');
+  root?.querySelectorAll<HTMLButtonElement>('button[data-show]').forEach((b) => {
+    b.addEventListener('click', () => {
+      root.dataset.show = b.dataset.show ?? 'all';
+      root.querySelectorAll('button[data-show]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    });
+  });
+</script>
+
+<style>
+  .ar-head {
+    padding-top: var(--ids__spacer-l);
+    align-items: end;
+  }
+
+  .ar-title {
+    grid-column: 1 / span 6;
+    margin: 0;
+    font-family: var(--f-serif);
+    font-weight: 400;
+    font-size: min(calc((100vw - 2 * var(--page-margin)) * 0.085), 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+
+  .ar-count {
+    vertical-align: top;
+    letter-spacing: 0.02em;
+  }
+
+  .ar-lead {
+    grid-column: 10 / span 3;
+    color: var(--ids__text-secondary);
+  }
+
+  /* ——— фильтр: подписи на осях 1 и 4, как переключатель в CV ——— */
+  .ar-filter {
+    margin-top: var(--ids__spacer-l);
+    align-items: baseline;
+  }
+
+  .ar-filter p {
+    grid-column: 1 / span 3;
+    margin: 0;
+  }
+
+  .ar-filter-buttons {
+    grid-column: 4 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ids__gap-s) var(--ids__gap-l);
+  }
+
+  .ar-filter button {
+    all: unset;
+    cursor: pointer;
+    color: var(--ids__text-caption);
+    border-bottom: var(--ids__border-width-s) solid transparent;
+    transition:
+      color var(--ids__duration-base) var(--ids__easing-base),
+      border-color var(--ids__duration-base) var(--ids__easing-base);
+  }
+
+  .ar-filter button[aria-pressed='true'],
+  .ar-filter button:hover {
+    color: var(--ids__text);
+    border-color: var(--ids__text);
+    transition-duration: var(--ids__duration-instant);
+  }
+
+  .ar-filter button:focus-visible {
+    outline: var(--ids__border-width-s) solid var(--ids__text);
+    outline-offset: 0.2em;
+  }
+
+  /* ——— год: крупная цифра антиквой на первой колонке, таблица под ней ——— */
+  .ar-year {
+    margin-top: var(--ids__spacer-l);
+  }
+
+  .ar-year-title {
+    margin: 0 0 var(--ids__gap-s);
+    font-weight: 400;
+  }
+
+  .ar-year-num {
+    grid-column: 1 / span 3;
+    font-family: var(--f-serif);
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  .ar-year :global(.rows) {
+    border-top-color: var(--ids__text);
+  }
+
+  /* строка работы — без ссылки и без превью */
+  [data-kind='work'] :global(.r-title) {
+    color: var(--ids__text-secondary);
+  }
+
+  /* фильтр */
+  .archive[data-show='project'] [data-kind='work'],
+  .archive[data-show='work'] [data-kind='project'] {
+    display: none;
+  }
+
+  .archive[data-show='project'] .ar-year:not(:has([data-kind='project'])),
+  .archive[data-show='work'] .ar-year:not(:has([data-kind='work'])) {
+    display: none;
+  }
+
+  @media (width < 768px) {
+    .ar-head {
+      padding-top: var(--ids__spacer-m);
+      row-gap: var(--ids__gap-l);
+    }
+    .ar-title {
+      grid-column: 1 / -1;
+      font-size: calc((100vw - 2 * var(--page-margin)) * 0.14);
+    }
+    .ar-lead {
+      grid-column: 2 / -1;
+    }
+    .ar-filter p {
+      grid-column: 1 / -1;
+      margin-bottom: var(--ids__gap-s);
+    }
+    .ar-filter-buttons {
+      grid-column: 1 / -1;
+    }
+    .ar-year-num {
+      grid-column: 1 / -1;
+      font-size: 2.25rem;
+    }
+    /* «работа · годы» не помещается в первую колонку — встаёт строкой над названием */
+    [data-kind='work'] :global(.r-num) {
+      grid-column: 2 / -1;
+      margin-bottom: var(--ids__gap-s);
+    }
+    [data-kind='work'] :global(.r-title) {
+      grid-row: 2;
+    }
+  }
+</style>
