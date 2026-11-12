@@ -39,7 +39,7 @@ const raw: [string, string, string, string, string, string, string, string?][] =
   ['10', 'qayaq', 'qayaq', 'айдентика', 'identity', '2026-05-24', 'qayaq-f4a0e20753464f6e848fa1e4ec11d328', 'qayaq'],
   ['11', 'Votive Objects', 'Votive Objects', 'предметный дизайн', 'object design', '2025-12-29', 'votive-objects-db8e80298b344fe2b9ef45d5f415ebbd'],
   ['12', 'emolla', 'emolla', 'айдентика', 'identity', '2023-10-26', 'cb9211edc6f44fb1b5a46444be0a8fa7'],
-  ['13', 'Аура повседневного', 'The Aura of the Everyday', 'визуальное исследование', 'visual research', '2025-12-12', 'aura-povsednevnogo-e3db2e4fc8ce4ef28aa4084e4a271ccc'],
+  ['13', 'Аура повседневного', 'The Aura of the Everyday', 'визуальное исследование', 'visual research', '2025-12-12', 'aura-povsednevnogo-e3db2e4fc8ce4ef28aa4084e4a271ccc', 'aura'],
   ['14', 'Андрей Тарковский [1932–1986]', 'Andrei Tarkovsky [1932–1986]', 'дизайн книги', 'book design', '2023-12-01', 'andrej-tarkovskij-1932-1986-b7382d8118584831b383145362591327', 'tarkovsky'],
   ['15', 'Peter Greenaway: H.S, A.P, P.G.S.', 'Peter Greenaway: H.S, A.P, P.G.S.', 'моушн-дизайн', 'motion design', '2025-06-26', 'peter-greenaway-h-s-a-p-p-g-s-78daf68c0f834fabb7be881118ce15d2'],
   ['16', 'Noire Dentelle', 'Noire Dentelle', 'шрифт', 'typeface', '2025-06-22', 'noire-dentelle-cbfdc93a8d004a9594e1038d2c31f8ee'],
