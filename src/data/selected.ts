@@ -8,6 +8,7 @@ import geoda from '../assets/covers/03.jpg';
 import look from '../assets/covers/01.jpg';
 import mc from '../assets/covers/27.jpg';
 import qayaq from '../assets/covers/10.jpg';
+import aura from '../assets/covers/13.jpg';
 
 // Черновой список избранного для главной. Порядок и состав утверждает Катерина.
 // Позже переедет в коллекцию проектов (src/content/projects).
@@ -22,6 +23,7 @@ export interface SelectedProject {
 export const selected: SelectedProject[] = [
   { slug: 'tarkovsky', title: { ru: 'Андрей Тарковский [1932–1986]', en: 'Andrei Tarkovsky [1932–1986]' }, type: { ru: 'дизайн книги', en: 'book design' }, year: 2023, cover: tarkovsky },
   { slug: 'qayaq', title: { ru: 'qayaq', en: 'qayaq' }, type: { ru: 'айдентика', en: 'identity' }, year: 2026, cover: qayaq },
+  { slug: 'aura', title: { ru: 'Аура повседневного', en: 'The Aura of the Everyday' }, type: { ru: 'визуальное исследование', en: 'visual research' }, year: 2025, cover: aura },
   { slug: 'husky', title: { ru: 'Ключевые образы в клипах Хаски', en: 'Key images in Husky’s music videos' }, type: { ru: 'визуальное исследование', en: 'visual research' }, year: 2024, cover: husky },
   { slug: 'noire-dentelle', title: { ru: 'Noire Dentelle', en: 'Noire Dentelle' }, type: { ru: 'шрифт', en: 'typeface' }, year: 2025, cover: noire },
   { slug: 'votive-objects', title: { ru: 'Votive Objects', en: 'Votive Objects' }, type: { ru: 'предметный дизайн', en: 'object design' }, year: 2025, cover: votive },
