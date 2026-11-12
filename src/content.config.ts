@@ -15,7 +15,8 @@ const projects = defineCollection({
       type: z.string(),
       lead: z.string(),
       tags: z.array(z.string()).default([]),
-      links: z.array(z.object({ label: z.string(), href: z.string().url() })).default([]),
+      // note — подпись под ссылкой (например, награда площадки)
+      links: z.array(z.object({ label: z.string(), href: z.string().url(), note: z.string().optional() })).default([]),
       // тексты между картинками: ключ → подпись и текст; ключи одинаковые в ru.md и en.md,
       // абзацы разделяются пустой строкой
       texts: z.record(z.string(), z.object({ label: z.string().optional(), body: z.string() })).default({}),
@@ -36,6 +37,8 @@ const projects = defineCollection({
             text: z.string().optional(),
             images: z.array(image()).default([]),
             youtube: z.string().optional(),
+            // видео на Kinescope: id из ссылки kinescope.io/<id>; плеер встраивается сразу, грузится при прокрутке
+            kinescope: z.string().optional(),
           }),
         )
         .default([]),

@@ -36,7 +36,7 @@ const raw: [string, string, string, string, string, string, string, string?][] =
   ['07', 'Производственная практика', 'Industrial placement', 'айдентика, принты', 'identity, prints', '2026-10-16', 'praktika-d9823c413344453d83cfd04baec40f5e'],
   ['08', 'Ключевые образы в клипах Хаски', 'Key images in Husky’s music videos', 'визуальное исследование', 'visual research', '2024-08-07', 'klyuchevye-obrazy-v-muzykalnykh-klipakh-i-c104178d8b3f42b5921d28d851dff5bd'],
   ['09', 'qayaq saqalɯ: suruk', 'qayaq saqalɯ: suruk', 'шрифт', 'typeface', '2026-05-24', 'qayaq-saqal-suruk-c6d96279fcf8434b95ea251912c94542'],
-  ['10', 'qayaq', 'qayaq', 'айдентика', 'identity', '2026-05-24', 'qayaq-f4a0e20753464f6e848fa1e4ec11d328'],
+  ['10', 'qayaq', 'qayaq', 'айдентика', 'identity', '2026-05-24', 'qayaq-f4a0e20753464f6e848fa1e4ec11d328', 'qayaq'],
   ['11', 'Votive Objects', 'Votive Objects', 'предметный дизайн', 'object design', '2025-12-29', 'votive-objects-db8e80298b344fe2b9ef45d5f415ebbd'],
   ['12', 'emolla', 'emolla', 'айдентика', 'identity', '2023-10-26', 'cb9211edc6f44fb1b5a46444be0a8fa7'],
   ['13', 'Аура повседневного', 'The Aura of the Everyday', 'визуальное исследование', 'visual research', '2025-12-12', 'aura-povsednevnogo-e3db2e4fc8ce4ef28aa4084e4a271ccc'],

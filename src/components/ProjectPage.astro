@@ -47,6 +47,7 @@ const sizes = {
               <a href={l.href} target="_blank" rel="noopener">
                 <span data-scramble>{l.label}</span> ↗
               </a>
+              {l.note && <span class="p-link-note muted">{l.note}</span>}
             </li>
           ))}
         </ul>
@@ -87,6 +88,21 @@ const sizes = {
                   <Pic src={img} sizes={sizes.loop} class={i === 0 ? 'is-on' : ''} />
                 ))}
               </figure>
+            </div>
+          );
+        }
+        if (row.layout === 'video' && row.kinescope) {
+          return (
+            <div class="g-row grid">
+              <div class="g-video">
+                <iframe
+                  src={`https://kinescope.io/embed/${row.kinescope}`}
+                  title={p.title}
+                  loading="lazy"
+                  allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+                  allowfullscreen
+                />
+              </div>
             </div>
           );
         }
@@ -199,6 +215,11 @@ const sizes = {
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  .p-link-note {
+    display: block;
+    text-transform: none;
   }
 
   .p-links a,

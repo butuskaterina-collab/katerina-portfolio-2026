@@ -10,6 +10,8 @@ lead: >-
 links:
   - { label: Video, href: 'https://www.youtube.com/watch?v=a3Ir7pQAh_E' }
   - { label: Read the book, href: 'https://www.calameo.com/read/007331545efe21ef0242d' }
+  - { label: Behance, href: 'https://www.behance.net/gallery/188886149/andrej-tarkovskij-1932-1986' }
+  - { label: Dprofile, href: 'https://dprofile.ru/case/51889/andrei-tarkovskii-1932-1986', note: 'featured in Recommended, Graphics category' }
 texts:
   about:
     label: About the project
