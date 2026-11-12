@@ -42,7 +42,7 @@ const raw: [string, string, string, string, string, string, string, string?][] =
   ['13', 'Аура повседневного', 'The Aura of the Everyday', 'визуальное исследование', 'visual research', '2025-12-12', 'aura-povsednevnogo-e3db2e4fc8ce4ef28aa4084e4a271ccc', 'aura'],
   ['14', 'Андрей Тарковский [1932–1986]', 'Andrei Tarkovsky [1932–1986]', 'дизайн книги', 'book design', '2023-12-01', 'andrej-tarkovskij-1932-1986-b7382d8118584831b383145362591327', 'tarkovsky'],
   ['15', 'Peter Greenaway: H.S, A.P, P.G.S.', 'Peter Greenaway: H.S, A.P, P.G.S.', 'моушн-дизайн', 'motion design', '2025-06-26', 'peter-greenaway-h-s-a-p-p-g-s-78daf68c0f834fabb7be881118ce15d2'],
-  ['16', 'Noire Dentelle', 'Noire Dentelle', 'шрифт', 'typeface', '2025-06-22', 'noire-dentelle-cbfdc93a8d004a9594e1038d2c31f8ee'],
+  ['16', 'Noire Dentelle', 'Noire Dentelle', 'шрифт', 'typeface', '2025-06-22', 'noire-dentelle-cbfdc93a8d004a9594e1038d2c31f8ee', 'noire-dentelle'],
   ['17', 'Магия Египта. Амулеты', 'Egyptian Magic. Amulets', 'дизайн книги', 'book design', '2023-10-30', 'c7c5ad0962ce4ffabbde6359d7c85734'],
   ['18', 'it talks', 'it talks', 'инсталляция', 'installation', '2025-03-30', 'cbe12d7a08d946c5a09a3425330fdb96'],
   ['19', 'Дочь самурая', 'Daughter of a Samurai', 'клип', 'music video', '2025-03-28', 'doch-samuraya-224ba7cbd1f84d68931014facd41efc0'],

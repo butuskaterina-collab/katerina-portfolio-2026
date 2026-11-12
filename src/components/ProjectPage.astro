@@ -91,6 +91,29 @@ const sizes = {
             </div>
           );
         }
+        if (row.layout === 'tester' && row.font) {
+          return (
+            <section class="g-row g-tester grid">
+              <style set:html={`@font-face{font-family:'tester-${p.slug}';src:url('${row.font}');font-display:swap}`} />
+              <div class="g-tester-sets mono">
+                <span class="muted">{t(lang, 'project.tester')}</span>
+                {row.sets.map((x, i) => (
+                  <button type="button" data-tag={x.tag} aria-pressed={i === 0 ? 'true' : 'false'}>{x.label}</button>
+                ))}
+              </div>
+              <p class="g-tester-text" contenteditable="plaintext-only" spellcheck="false" style={`font-family:'tester-${p.slug}', serif`}>{p.title}</p>
+            </section>
+          );
+        }
+        if (row.layout === 'video' && row.mp4) {
+          return (
+            <div class="g-row grid g-full">
+              <figure>
+                <video class="g-clip" src={row.mp4} autoplay muted loop playsinline preload="auto" />
+              </figure>
+            </div>
+          );
+        }
         if (row.layout === 'video' && row.kinescope) {
           return (
             <div class="g-row grid">
@@ -156,6 +179,29 @@ const sizes = {
       }, 1100);
     });
   }
+
+  // короткие видео-гифки: при «уменьшить движение» стоят на последнем кадре (первый бывает пустым)
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<HTMLVideoElement>('.g-clip').forEach((v) => {
+      v.loop = false;
+      v.pause();
+      const toEnd = () => (v.currentTime = Math.max(0, v.duration - 0.05));
+      if (v.readyState >= 1) toEnd();
+      else v.addEventListener('loadedmetadata', toEnd, { once: true });
+    });
+  }
+
+  // тестер шрифта: кнопка включает стилистический сет
+  document.querySelectorAll<HTMLElement>('.g-tester').forEach((box) => {
+    const text = box.querySelector<HTMLElement>('.g-tester-text');
+    box.querySelectorAll<HTMLButtonElement>('button[data-tag]').forEach((b) => {
+      b.addEventListener('click', () => {
+        const tag = b.dataset.tag;
+        if (text) text.style.fontFeatureSettings = tag ? `'${tag}' 1` : 'normal';
+        box.querySelectorAll('button[data-tag]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      });
+    });
+  });
 
   // видео: сначала только обложка, плеер YouTube грузится по клику — страница остаётся лёгкой
   document.querySelectorAll<HTMLElement>('.g-video').forEach((box) => {
@@ -293,6 +339,55 @@ const sizes = {
 
   .g-loop :global(img.is-on) {
     visibility: visible;
+  }
+
+  .g-tester {
+    align-items: baseline;
+  }
+
+  .g-tester-sets {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ids__gap-s) var(--ids__gap-l);
+  }
+
+  .g-tester-sets button {
+    all: unset;
+    cursor: pointer;
+    color: var(--ids__text-caption);
+    border-bottom: var(--ids__border-width-s) solid transparent;
+    transition: color var(--ids__duration-base) var(--ids__easing-base), border-color var(--ids__duration-base) var(--ids__easing-base);
+  }
+
+  .g-tester-sets button[aria-pressed='true'],
+  .g-tester-sets button:hover {
+    color: var(--ids__text);
+    border-color: var(--ids__text);
+    transition-duration: var(--ids__duration-instant);
+  }
+
+  .g-tester-sets button:focus-visible {
+    outline: var(--ids__border-width-s) solid var(--ids__text);
+    outline-offset: 0.2em;
+  }
+
+  .g-tester-text {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: clamp(3rem, 11vw, 11rem);
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+    outline: none;
+    padding-block: var(--ids__spacer-s);
+    border-block: var(--ids__border-width-s) solid var(--ids__border);
+    cursor: text;
+  }
+
+  .g-clip {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   .g-video {

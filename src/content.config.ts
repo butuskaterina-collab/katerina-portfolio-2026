@@ -33,12 +33,18 @@ const projects = defineCollection({
             // center — 6 колонок по главной оси; video — встроенное видео с обложкой;
             // text — текст из texts по ключу text; все тексты стоят справа, с 7-й колонки;
             // loop — несколько кадров сменяют друг друга по кругу, как гифка (во всю ширину)
-            layout: z.enum(['full', 'pair', 'right', 'left', 'center', 'video', 'text', 'loop']),
+            layout: z.enum(['full', 'pair', 'right', 'left', 'center', 'video', 'text', 'loop', 'tester']),
             text: z.string().optional(),
             images: z.array(image()).default([]),
             youtube: z.string().optional(),
             // видео на Kinescope: id из ссылки kinescope.io/<id>; плеер встраивается сразу, грузится при прокрутке
             kinescope: z.string().optional(),
+            // короткое видео без звука, крутится по кругу, как гифка: путь к файлу в public/ (например /projects/<slug>/01.mp4)
+            mp4: z.string().optional(),
+            // tester — строка, набранная шрифтом из font (путь в public/), её можно переписать и переключать сеты;
+            // sets: подпись → тег OpenType (пустая строка — базовый)
+            font: z.string().optional(),
+            sets: z.array(z.object({ label: z.string(), tag: z.string() })).default([]),
           }),
         )
         .default([]),
