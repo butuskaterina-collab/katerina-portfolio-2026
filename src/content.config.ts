@@ -41,6 +41,8 @@ const projects = defineCollection({
             kinescope: z.string().optional(),
             // короткое видео без звука, крутится по кругу, как гифка: путь к файлу в public/ (например /projects/<slug>/01.mp4)
             mp4: z.string().optional(),
+            // книга на Calameo: bkcode из ссылки calameo.com/read/<bkcode>; листается прямо на странице
+            calameo: z.string().optional(),
             // tester — строка, набранная шрифтом из font (путь в public/), её можно переписать и переключать сеты;
             // sets: подпись → тег OpenType (пустая строка — базовый)
             font: z.string().optional(),

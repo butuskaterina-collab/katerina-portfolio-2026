@@ -77,6 +77,7 @@ gallery:
   - { layout: text, text: cover }
   - { layout: left, images: [./images/07.jpg] }
   - { layout: pair, images: [./images/08.jpg, ./images/09.jpg] }
+  - { layout: video, calameo: 007331545efe21ef0242d }
   - { layout: text, text: concept }
   - { layout: full, images: [./images/04.jpg] }
   - { layout: text, text: biography }
