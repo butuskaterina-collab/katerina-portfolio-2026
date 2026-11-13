@@ -391,10 +391,11 @@ const sizes = {
     grid-column: 1 / -1;
     margin: 0;
     font-size: clamp(3rem, 11vw, 11rem);
-    line-height: 1.15;
+    /* у Dangle и Lgore длинные выносные: сверху и снизу запас, чтобы капли не залезали на линии */
+    line-height: 1.5;
     overflow-wrap: anywhere;
     outline: none;
-    padding-block: var(--ids__spacer-s);
+    padding-block: 0.15em 0.5em;
     border-block: var(--ids__border-width-s) solid var(--ids__border);
     cursor: text;
   }
