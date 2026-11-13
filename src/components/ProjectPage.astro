@@ -272,8 +272,9 @@ const sizes = {
   .p-links {
     grid-column: 10 / span 3;
     grid-row: 3;
-    align-self: end;
-    margin: 0;
+    /* верх «Ссылок» — на одной линии с первой строкой описания, как бы ни были длинны текст и список */
+    align-self: start;
+    margin: var(--ids__spacer-m) 0 0;
     padding: 0;
     list-style: none;
   }
@@ -547,6 +548,7 @@ const sizes = {
     .p-links {
       grid-column: 2 / -1;
       grid-row: 5;
+      margin-top: 0;
     }
     .g-pair figure,
     .g-right figure,
