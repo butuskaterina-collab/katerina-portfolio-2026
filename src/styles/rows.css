@@ -28,7 +28,6 @@
 
 .r-num {
   grid-column: 1 / span 3;
-  transition: opacity var(--ids__duration-base) var(--ids__easing-base);
 }
 
 .r-title {
@@ -38,7 +37,6 @@
   font-size: 1.5rem; /* кегль h3 в IDS */
   line-height: calc(var(--ids__density) / 1.1);
   letter-spacing: -0.015em;
-  transition: transform var(--ids__duration-base) var(--ids__easing-base);
 }
 
 /* тип проекта всегда в одну строку: строки одной высоты, подписи на одной базовой линии с названием
@@ -63,7 +61,6 @@
   position: relative;
   overflow: hidden;
   opacity: 0;
-  transition: opacity var(--ids__duration-base) var(--ids__easing-base);
 }
 
 /* картинка не влияет на высоту строки: занимает ячейку целиком и обрезается */
@@ -75,18 +72,41 @@
   object-fit: cover;
 }
 
+/* наведение спокойное: короткая пауза, чтобы строки не дёргались, когда курсор просто проходит по списку,
+   затем плавный сдвиг с мягким торможением; уход — быстрее и без паузы */
+.row {
+  --row-in: 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+  --row-out: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.r-num,
+.r-thumb {
+  transition: opacity var(--row-out);
+}
+.r-title {
+  transition: transform var(--row-out);
+}
+
 @media (hover: hover) and (pointer: fine) {
+  .row:hover .r-num,
+  .row:hover .r-thumb {
+    transition: opacity var(--row-in);
+  }
   .row:hover .r-num {
     opacity: 0;
-    transition-duration: var(--ids__duration-instant);
   }
   .row:hover .r-title {
     transform: translateX(calc(-1 * var(--shift)));
-    transition-duration: var(--ids__duration-instant);
+    transition: transform var(--row-in);
   }
   .row:hover .r-thumb {
     opacity: 1;
-    transition-duration: var(--ids__duration-instant);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row .r-title,
+  .row:hover .r-title {
+    transition: none;
   }
 }
 
