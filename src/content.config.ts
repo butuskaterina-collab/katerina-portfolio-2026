@@ -39,6 +39,8 @@ const projects = defineCollection({
             youtube: z.string().optional(),
             // видео на Kinescope: id из ссылки kinescope.io/<id>; плеер встраивается сразу, грузится при прокрутке
             kinescope: z.string().optional(),
+            // видео во «VK Видео»: ссылка для встраивания целиком (vkvideo.ru/video_ext.php?oid=…&id=…&hash=…)
+            vk: z.string().url().optional(),
             // короткое видео без звука, крутится по кругу, как гифка: путь к файлу в public/ (например /projects/<slug>/01.mp4)
             mp4: z.string().optional(),
             // книга на Calameo: bkcode из ссылки calameo.com/read/<bkcode>; листается прямо на странице

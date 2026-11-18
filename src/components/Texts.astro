@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { t, type Lang } from '../i18n/ui';
+import { t, localePath, type Lang } from '../i18n/ui';
 import { texts } from '../data/texts';
 import { typograph } from '../lib/typograph';
 
@@ -9,6 +9,9 @@ interface Props {
 }
 const { lang } = Astro.props;
 const pad = (n: number) => String(n).padStart(2, '0');
+// у текста со своей страницей-кейсом ссылка внутренняя, иначе — на hsedesign.ru в новой вкладке
+const link = (x: (typeof texts)[number]) =>
+  x.slug ? { href: localePath(lang, `/projects/${x.slug}/`), target: undefined, rel: undefined, mark: '→' } : { href: x.href, target: '_blank', rel: 'noopener', mark: '↗' };
 import '../styles/page-head.css';
 ---
 
@@ -33,7 +36,7 @@ import '../styles/page-head.css';
             {x.year}
           </p>
           <h2 class="tx-name">
-            <a href={x.href} target="_blank" rel="noopener">{typograph(x.title[lang])}</a>
+            <a href={link(x).href} target={link(x).target} rel={link(x).rel}>{typograph(x.title[lang])}</a>
           </h2>
           <p class="tx-text">{typograph(x.lead[lang])}</p>
           <div class="tx-side">
@@ -45,7 +48,7 @@ import '../styles/page-head.css';
             <p class="tx-type mono">
               <span class="muted">{x.type[lang]}</span>
               <br />
-              <a href={x.href} target="_blank" rel="noopener">{t(lang, 'texts.read')} ↗</a>
+              <a href={link(x).href} target={link(x).target} rel={link(x).rel}>{t(lang, 'texts.read')} {link(x).mark}</a>
               {x.video && (
                 <>
                   <br />

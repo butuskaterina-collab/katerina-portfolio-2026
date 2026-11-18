@@ -129,12 +129,13 @@ const sizes = {
             </div>
           );
         }
-        if (row.layout === 'video' && row.kinescope) {
+        // kinescope, vk или youtube без своей обложки — плеер встраивается сразу, грузится при прокрутке
+        if (row.layout === 'video' && (row.kinescope || row.vk || (row.youtube && !row.images[0]))) {
           return (
             <div class="g-row grid">
               <div class="g-video">
                 <iframe
-                  src={`https://kinescope.io/embed/${row.kinescope}`}
+                  src={row.kinescope ? `https://kinescope.io/embed/${row.kinescope}` : row.vk ?? `https://www.youtube-nocookie.com/embed/${row.youtube}?rel=0`}
                   title={p.title}
                   loading="lazy"
                   allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
