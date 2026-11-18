@@ -5,8 +5,12 @@ import { getProjects } from '../../lib/projects';
 import { t } from '../../i18n/ui';
 
 export async function getStaticPaths() {
-  const all = await getProjects('ru', 'projects');
-  return all.map((project, i) => ({ params: { slug: project.slug }, props: { project, next: all[i + 1] ?? (all.length > 1 ? all[0] : undefined) } }));
+  // страницы есть у кейсов обоих разделов: «Проекты» и «Тексты» (визуальные исследования);
+  // «Следующий» листает внутри своего раздела
+  const groups = [await getProjects('ru', 'projects'), await getProjects('ru', 'texts')];
+  return groups.flatMap((all) =>
+    all.map((project, i) => ({ params: { slug: project.slug }, props: { project, next: all[i + 1] ?? (all.length > 1 ? all[0] : undefined) } })),
+  );
 }
 
 const { project, next } = Astro.props;

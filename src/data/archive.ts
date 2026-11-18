@@ -55,9 +55,8 @@ const raw: [string, string, string, string, string, string, string, string?][] =
   ['26', 'Капибары и дюгони: НИУ ВШЭ × галерея «Ходынка»', 'Capybaras and Dugongs: HSE × Khodynka Gallery', 'иллюстрация', 'illustration', '2024-06-26', '2d49ea0059dc41ffad8c21d4d7936b74', 'capybaras'],
   ['27', '.mс', '.mс', 'цифровой продукт', 'digital product', '2024-06-25', 'ms-c36682b90cbc46f3a152ce66d362e28b', 'mc'],
   ['28', 'Догхантер: как защитить питомца', 'Doghunter: how to protect your pet', 'веб-дизайн', 'web design', '2024-03-31', '137deab15a274c6d812f8cc192f81848', 'doghunter'],
-  ['29', 'emolla', 'emolla', 'упаковка', 'packaging', '2023-12-25', '5c41b7b104b149b390c6d2a0225ad1b2', 'emolla-packaging'],
-  ['30', 'Динамика и оценка успеха фильмов A24 на основе данных', 'The dynamics and success of A24 films in data', 'визуализация данных', 'data visualisation', '2025-07-08', '24bba4ecb17947e5879bf838bb9e8fd3', 'a24'],
-  ['32', 'emolla: переосмысление бренда посредством ИИ', 'emolla: rethinking a brand through AI', 'айдентика, нейросети', 'identity, neural networks', '2025-03-21', '0d63b4e8f40748dab7e7fa30808818bb', 'emolla-ai'],
+  ['29', 'emolla', 'emolla', 'упаковка', 'packaging', '2023-12-25', '5c41b7b104b149b390c6d2a0225ad1b2', 'emolla'],
+  ['32', 'emolla: переосмысление бренда посредством ИИ', 'emolla: rethinking a brand through AI', 'айдентика, нейросети', 'identity, neural networks', '2025-03-21', '0d63b4e8f40748dab7e7fa30808818bb'],
 ];
 
 const projects: ArchiveItem[] = raw.map(([n, ru, en, typeRu, typeEn, date, id, slug]) => ({

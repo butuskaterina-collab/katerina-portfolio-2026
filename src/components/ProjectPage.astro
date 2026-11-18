@@ -9,6 +9,8 @@ interface Props {
   next?: Project;
 }
 const { lang, project: p, next } = Astro.props;
+// визуальные исследования живут в «Текстах» — туда и ведёт ссылка «назад»
+const back = p.section === 'texts' ? { href: '/texts/', label: t(lang, 'project.backTexts') } : { href: '/projects/', label: t(lang, 'project.back') };
 
 // ширина картинки на экране — для выбора нужного размера файла
 const sizes = {
@@ -29,7 +31,7 @@ const sizes = {
 -->
 <article class="project">
   <header class="p-head grid">
-    <a class="p-back mono" href={localePath(lang, '/projects/')}>← <span data-scramble>{t(lang, 'project.back')}</span></a>
+    <a class="p-back mono" href={localePath(lang, back.href)}>← <span data-scramble>{back.label}</span></a>
     <p class="p-meta mono" style="--col:4"><span class="muted">{t(lang, 'project.type')}</span><br />{p.type}</p>
     <p class="p-meta mono" style="--col:7"><span class="muted">{t(lang, 'project.year')}</span><br />{p.year}</p>
     <p class="p-meta mono" style="--col:10"><span class="muted">{t(lang, 'project.tags')}</span><br />{p.tags.join(' / ')}</p>
@@ -168,7 +170,7 @@ const sizes = {
   </div>
 
   <nav class="p-nav grid mono">
-    <a class="p-nav-back" href={localePath(lang, '/projects/')}>← <span data-scramble>{t(lang, 'project.back')}</span></a>
+    <a class="p-nav-back" href={localePath(lang, back.href)}>← <span data-scramble>{back.label}</span></a>
     {
       next && (
         <a class="p-nav-next" href={localePath(lang, `/projects/${next.slug}/`)}>

@@ -4,6 +4,9 @@ type: book design
 tags: [book, layout, pocketbook]
 lead: >-
   A series of pocketbooks about ancient Egyptian amulets, spells and ceremonies.
+links:
+  - { label: HSE Design, href: 'https://hsedesign.ru/project/c7c5ad0962ce4ffabbde6359d7c85734' }
+  - { label: Flip through the book, href: 'https://www.calameo.com/read/00733154540e5bd9fde90' }
 texts:
   about:
     label: About the project
