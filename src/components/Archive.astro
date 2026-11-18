@@ -167,6 +167,13 @@ import '../styles/page-head.css';
     color: var(--ids__text-secondary);
   }
 
+  /* в инверсии название работы светлое, как у остальных строк */
+  @media (hover: hover) and (pointer: fine) {
+    [data-kind='work'] :global(.row:hover .r-title) {
+      color: var(--ids__background);
+    }
+  }
+
   /* фильтр */
   .archive[data-show='project'] [data-kind='work'],
   .archive[data-show='work'] [data-kind='project'] {
