@@ -2,8 +2,8 @@ import type { ImageMetadata } from 'astro';
 
 /*
   Раздел «Тексты» — визуальные исследования из папки «визуальные исследования» в профиле Катерины на HSE Design
-  (pro.hsedesign.com/account/zaraza). Аннотации собраны из её текстов, без добавлений.
-  Пока у текстов нет своих страниц, «Читать» ведёт на pro.hsedesign.com, «Смотреть видео» — на YouTube или Kinescope.
+  (hsedesign.ru/account/zaraza). Аннотации собраны из её текстов, без добавлений.
+  Если у текста нет своей страницы, «Читать» ведёт на hsedesign.ru, «Смотреть видео» — на YouTube или Kinescope.
   Обложки: положить файл в src/assets/texts/<key>.jpg — он подхватится сам.
   Не вошли: «a la russe — „Русские сезоны“ и мода» и «Renaissancecore» (страницы закрыты модератором),
   «Thinking about communication theory: emolla» (командная, Катерина убрала её из своей папки).
@@ -12,11 +12,13 @@ import type { ImageMetadata } from 'astro';
 type L = { ru: string; en: string };
 
 const covers = import.meta.glob<{ default: ImageMetadata }>('../assets/texts/*.jpg', { eager: true });
-const hse = (id: string) => `https://pro.hsedesign.com/project/${id}`;
+const hse = (id: string) => `https://hsedesign.ru/project/${id}`;
 
-const entries: { key: string; title: L; type: L; date: string; id: string; lead: L; video?: string }[] = [
+// slug — если у текста есть страница-кейс на сайте: тогда «Читать» ведёт туда
+const entries: { key: string; title: L; type: L; date: string; id: string; lead: L; video?: string; slug?: string }[] = [
   {
     key: 'aura',
+    slug: 'aura',
     title: { ru: 'Аура повседневного', en: 'The Aura of the Everyday' },
     type: { ru: 'визуальное исследование, диплом', en: 'visual research, graduation project' },
     date: '2025-12-12',
@@ -85,6 +87,7 @@ const entries: { key: string; title: L; type: L; date: string; id: string; lead:
   },
   {
     key: 'husky',
+    slug: 'husky',
     title: { ru: 'Ключевые образы в клипах Хаски', en: 'Key images in Husky’s music videos' },
     type: { ru: 'визуальное исследование', en: 'visual research' },
     date: '2024-08-07',
@@ -96,6 +99,7 @@ const entries: { key: string; title: L; type: L; date: string; id: string; lead:
   },
   {
     key: 'look',
+    slug: 'look',
     title: { ru: 'Лук сквозь века', en: 'The Bow Through the Ages' },
     type: { ru: 'визуальное исследование', en: 'visual research' },
     date: '2024-04-01',
