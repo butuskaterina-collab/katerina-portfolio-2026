@@ -11,7 +11,7 @@ lead: >-
   осознанным ритуалом.
 cover: ./images/10.jpg
 links:
-  - { label: HSE Design, href: 'https://pro.hsedesign.com/project/qayaq-f4a0e20753464f6e848fa1e4ec11d328' }
+  - { label: HSE Design, href: 'https://hsedesign.ru/project/qayaq-f4a0e20753464f6e848fa1e4ec11d328' }
   - { label: Behance, href: 'https://www.behance.net/gallery/253637877/qayaq-brand-identity-motion' }
   - { label: Dprofile, href: 'https://dprofile.ru/case/194474/qayaq-aidentika-i-animaciia-dlia-brenda-iakutskogo-slivocnogo-masla', note: 'в рекомендуемых работах, категория «Брендинг»' }
 texts:

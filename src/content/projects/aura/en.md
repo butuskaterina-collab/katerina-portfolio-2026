@@ -5,7 +5,7 @@ tags: [explainer, 3D animation, author’s animation]
 lead: >-
   Using a piece of butter as an example, the explainer shows how a simple thing becomes “valuable”.
 links:
-  - { label: HSE Design, href: 'https://pro.hsedesign.com/project/aura-povsednevnogo-e3db2e4fc8ce4ef28aa4084e4a271ccc' }
+  - { label: HSE Design, href: 'https://hsedesign.ru/project/aura-povsednevnogo-e3db2e4fc8ce4ef28aa4084e4a271ccc' }
   - { label: Behance, href: 'https://www.behance.net/gallery/252057045/video-eksplejner-aura-povsednevnogo' }
   - { label: Dprofile, href: 'https://dprofile.ru/case/161297/aura-povsednevnogo-video-ekspleiner' }
 texts:

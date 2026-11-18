@@ -9,7 +9,7 @@ lead: >-
   Готический акцидентный шрифт с математической строгостью, сохраняющий как драматичность готики, так и лёгкость антиквы.
 cover: ./images/02.jpg
 links:
-  - { label: HSE Design, href: 'https://pro.hsedesign.com/project/noire-dentelle-cbfdc93a8d004a9594e1038d2c31f8ee' }
+  - { label: HSE Design, href: 'https://hsedesign.ru/project/noire-dentelle-cbfdc93a8d004a9594e1038d2c31f8ee' }
 texts:
   about:
     label: О проекте
