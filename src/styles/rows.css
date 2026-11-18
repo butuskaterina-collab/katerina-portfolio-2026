@@ -1,7 +1,7 @@
 /*
   Таблица проектов — общая для главной и архива.
   Строка: номер · название (с главной оси, 4-я колонка) · тип (10-я колонка) · год.
-  При наведении номер гаснет, название уходит влево на три колонки,
+  При наведении строка уходит в инверсию (тёмная заливка слева направо), номер гаснет, название уходит влево на три колонки,
   в освободившемся месте (колонки 7–9) проявляется кадр проекта.
 */
 .rows {
@@ -78,6 +78,15 @@
   --row-in: 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
   --row-out: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
+/* инверсия, как у выделенного текста: строку заливает тёмным слева направо, текст становится светлым */
+.row {
+  background: linear-gradient(var(--ids__text), var(--ids__text)) no-repeat left / 0% 100%;
+  transition: background-size var(--row-out), color var(--row-out);
+}
+.row .r-type,
+.row .muted {
+  transition: color var(--row-out);
+}
 .r-num,
 .r-thumb {
   transition: opacity var(--row-out);
@@ -87,6 +96,16 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .row:hover {
+    background-size: 100% 100%;
+    color: var(--ids__background);
+    transition: background-size var(--row-in), color var(--row-in);
+  }
+  .row:hover .r-type,
+  .row:hover .muted {
+    color: color-mix(in srgb, var(--ids__background) 65%, transparent);
+    transition: color var(--row-in);
+  }
   .row:hover .r-num,
   .row:hover .r-thumb {
     transition: opacity var(--row-in);
@@ -107,6 +126,14 @@
   .row .r-title,
   .row:hover .r-title {
     transition: none;
+  }
+  .row,
+  .row:hover {
+    background-size: 100% 100%;
+    background-image: none;
+  }
+  .row:hover {
+    background-color: var(--ids__text);
   }
 }
 
